@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Minitelstart
+Path=/home/pi/minitel
+Exec=/usr/bin/python /home/pi/minitel/wishV1_1.py
+Terminal=true
+

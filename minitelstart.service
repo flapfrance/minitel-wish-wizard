@@ -1,0 +1,11 @@
+[Unit]
+Description=mtel-start Service
+After=network-online.target
+[Service]
+Type=idle
+User=pi
+WorkingDirectory=/home/pi/minitel
+ExecStart=/usr/bin/python /home/pi/minitel/wishV1_1.py
+Restart=always
+[Install]
+WantedBy=multi-user.target

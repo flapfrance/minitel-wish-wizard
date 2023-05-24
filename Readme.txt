@@ -1,0 +1,22 @@
+Wish Wizard 
+"Make Dreams Come True"
+
+Installation:
+Linux oder Raspberry
+benötigt:
+    SSH zugriff & evtl VNC
+    mariadb  (und libmariadb-dev via sudo apt install)
+    python (sollte ja da sein, auf jeden Fal > 3.0)
+        mit pip 
+            und pip install mysql.connector
+
+Programm benötigt aus mariadb:
+    CREATE DATABASE minitel
+    utilisateur1 : CREATE USER 'utilisateur1'@'%'
+    GRANT ALL ON *.* TO 'utilisateur1'@'%'
+
+
+Autostart via: 
+"crontab -e" und "@reboot sleep 60 && cd /home/pi/minitel && /usr/bin/python /home/pi/minitel/wish_server_locV0.py"
+oder
+eventuel mit .desktop oder .service (files im Verzeichniss)

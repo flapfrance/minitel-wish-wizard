@@ -1,2 +1,2 @@
 # minitel-wish-wizard
-Wish Wizard system build withold French minitels
+Wish Wizard system build with old French minitels

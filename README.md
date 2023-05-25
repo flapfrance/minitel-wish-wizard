@@ -17,9 +17,23 @@ Programm benötigt aus mariadb:
     CREATE DATABASE minitel
     utilisateur1 : CREATE USER 'utilisateur1'@'%'
     GRANT ALL ON *.* TO 'utilisateur1'@'%'
-
+    
+    Tables: whishes , prefs
+    To delete (drop) table :
+        sudo mariadb
+        USE minitel
+        DROP TABLE wishes
 
 Autostart via: 
-"crontab -e" und "@reboot sleep 60 && cd /home/pi/minitel && /usr/bin/python /home/pi/minitel/wish_server_locV0.py"
+minitelstart.service datei copy to /etc/systemd/system (check path in file)
+
+sudo systemctl enable minitelstart.service
+sudo systemctl daemon-reload
+
+or "crontab -e" und "@reboot sleep 60 && cd /home/pi/minitel && /usr/bin/python /home/pi/minitel/wish_server_locV0.py"
 oder
-eventuel mit .desktop oder .service (files im Verzeichniss)
+eventuel mit .desktop  (file im Verzeichniss)
+Special codes: 
+    On pages Choices (1 or 2) :
+        99 to open delete whishes page
+        98 preferences (NOT READY YET)

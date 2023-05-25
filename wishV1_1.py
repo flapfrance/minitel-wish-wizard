@@ -620,9 +620,9 @@ class StateMachine:
         m.zone(9, 15, 23, '', m.blanc)
         m.zone(11, 15, 23, '', m.blanc)
         m.zone(13, 15, 23, '', m.blanc)        
-        m.zone(15, 15, 20, '', m.blanc)        
-        m.zone(17, 15, 20, '', m.blanc)
-        m.zone(19, 15, 20, '', m.blanc)        
+        m.zone(15, 15, 1, '', m.blanc)        
+        m.zone(17, 15, 23, '', m.blanc)
+        m.zone(19, 15, 23, '', m.blanc)        
         touche = m.repetition
         zone = 1
         m.home()
@@ -1393,9 +1393,9 @@ def main():
         descr1 VARCHAR(24),
         descr2 VARCHAR(24),
         descr3 VARCHAR(24),
-        name VARCHAR(22), 
+        name VARCHAR(24), 
         rated VARCHAR(1),
-        find VARCHAR(22),
+        find VARCHAR(24),
         fullfilled VARCHAR(1)
         );"""
     db_cursor.execute(sql_anweisung1)

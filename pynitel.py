@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-
+#/usr/bin/python3
+# -*- coding: utf-8 -*-
 # ré-écritude en python3 de Cristel/Dragster !
 # (C) 1984-2017 Christian Quest / A-GPL
 
@@ -231,7 +231,9 @@ class Pynitel:
                 elif c == self.PRO3:
                     self.conn.read(3)
             elif c >= ' ' and len(data) >= longueur:
-                print("beep")#self.bip()
+                #print("beep")#
+                self.bip()
+                self.pos(ligne,colonne + longueur)
             elif c >= ' ':
                 data = data + c
 

@@ -1,6 +1,6 @@
 #/usr/bin/python3
 # -*- coding: utf-8 -*-
-# Special thanks to the french Minitel Community, Cquest and all the others
+#
 # Thanks to Ocean, JS, Montaulab, Claudine....
 #*************************************************************
 import csv, sqlite3, sys, pynitel, serial, mysql.connector, os

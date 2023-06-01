@@ -33,10 +33,9 @@ needs: If running on RASPI: SSH access & perhaps VNC
         - "crontab -e" and "@reboot sleep 60 && cd /home/pi/minitel && /usr/bin/python /home/pi/minitel/wish_server_locV0.py"
         - oder eventuel mit .desktop  (file in directory)
    
-4. Network: 
-    -For multi-minitel installation  create a (wifi) network. Actually the  Programm use  192.168.0.1-255
-    Server is on 192.168.0.99
-    If there are Networkproblems change in "wishwizard.py" (around line 1384)
+4. Network:
+    - For multi-minitel installation  create a (wifi) network. Actually the  Programm uses  192.168.0.1-255
+    Server is on 192.168.0.99. If there are Networkproblems change IP adresse in "wishwizard.py" (around line 1384).
     The clients can be attached via DHCP
 
 5. Special codes: 

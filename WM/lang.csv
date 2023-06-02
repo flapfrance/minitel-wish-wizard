@@ -18,9 +18,9 @@ p2t5;ton souhait; ;einzuschreiben;
 p2t6;choisi;press;druecke;Teclea
 p2t7;1;1;1;1
 p2t8;ou;or;oder;o
-p2t9;Tu est une fée et;You are a wizard;Du bist eine Fee;Eres un mago.a
-p2t10;tu rempli les souhaits,;and fullfill wishes,;und erfuellst Wuensche,;y realizas sueños
-p2t11;choisie;press;druecke;Teclea
+p2t9;Tu es une fée et tu;You are a wizard;Du bist eine Fee und;Eres un mago.a
+p2t10;remplis les souhaits,;and fullfill wishes,;erfuellst Wuensche,;y realizas sueños
+p2t11;choisi;press;druecke;Teclea
 p2t12;2;2;2;2
 p2t13; +  ; +  ; +  ; +  
 p2t14;Touche ENVOI;Key ENVOI;Taste ENVOI;Tecla ENVOI
@@ -42,8 +42,8 @@ p3t12;Ligne suiv.;Next Line → ;Nächste   →;Linea siguiente →
 p3t13;Ligne préc.;Prev Line →;Vorherige →;Linea precedente→
 p3t14;Sauvegarder→;      Save →; Speichern →;     Registrar →
 p3t15;  Home →;  Home →;Zurück →;  Home →
-p4t1;Souhait N° ;Wish N° ;Wunsch N° ;Wish N° 
-p4t2; enregistré!; saved!; gespeichert!;Registrado!
+p4t1;Souhait ;Wish ;Wunsch ;Deseo
+p4t2; enregistré!; saved!; gespeichert!;registrado!
 p5t1;Les souhaits actuels:;Actual Wishes:;Aktuelle Wünsche:;Todos los deseos:
 p5t2;Ton choix:;Your Choice:;Deine Wahl:;Tu elección:
 p5t3;  + →;  + →;  + →;  + →
@@ -51,7 +51,7 @@ p5t4;Aide →;Help →;Hilfe→;Manual →
 p5t5;Home →;Home →;Home →;Home →
 p5t6;Page suiv. →;Next page →;Nächste →;Linea siguiente → 
 p5t7;Page prec. →;Prev.page →;Vorherige →;Linea precedente→
-p5t8;Pas encore des souhaits insciit!;No wishes inscribed yet!;Noch keine Wünsche eingetragen !;Ninguno deseos por ahora
+p5t8;Pas encore des souhaits insciit!;No wishes inscribed yet!;Noch keine Wünsche eingetragen!;Ninguno deseos por ahora
 p5t9;Contenu adulte, pas d accès;ADULT CONTENT – No ACCESS;Inhalt für Erwachsene – Kein Zugriff;CONTENIDO ADULTO– No ACCESSO
 p6t1;Souhait plustôt adulte;Possible ADULT conten;Môglicherweise ein 18+ Wunsch;Possible contenido ADULTO
 p6t2;   Pour accédé à ce souhait; To access this wish, please  ; Um diesen Wunsch kennenzulernen ;Para aceder el deseo, por favor

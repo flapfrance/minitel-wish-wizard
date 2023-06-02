@@ -149,7 +149,7 @@ class StateMachine:
         self.changeState( self.stateLanguage )
        
     def stateWishPic( self, entering  ):
-        global lang, sltime
+        global lang, sltime, ver
         
         print("Wish wizard picture")
         m.home()
@@ -200,7 +200,8 @@ class StateMachine:
         
         while True:
             m.home()
-            m.pos(2)
+            m.pos(0,1)
+            m._print("Version " + ver)
             m.pos(2,1)
             m.scale(3)
             m._print(transl("p3t1"))
@@ -304,7 +305,7 @@ class StateMachine:
         
     def stateLanguage(self, entering): #p0t1
         print("State Welcome")
-        global lang, th1, sltime
+        global lang, th1, sltime, ver
         m._del(0,0)        
         while True:# t2 > time.time():#True:
             if True == True:  # affichage
@@ -312,7 +313,7 @@ class StateMachine:
                 m.home()
                 m.pos(0)
                 m.pos(0,0)
-                m._print(lang)
+                m._print("V" + ver + " / " + lang)
                 m.pos(2)
                 m.pos(2,1)
                 m.scale(3)
@@ -719,6 +720,12 @@ class StateMachine:
                 break
         if touche == 1:
             print("check & prepare data ")
+            #*** prepare Adultcheck
+            if m.zones[4]['texte'] == "y":
+                m.zones[4]['texte'] = "Y"             
+            if m.zones[4]['texte'] != "Y" :
+                m.zones[4]['texte'] = "N"
+            
             wish1 = (m.zones[0]['texte'], m.zones[1]['texte'],m.zones[2]['texte'], m.zones[3]['texte'], m.zones[5]['texte'], m.zones[4]['texte'], m.zones[6]['texte'])#.strip()
             self.changeState( self.stateWishsaved )
         elif touche == 6:
@@ -748,7 +755,8 @@ class StateMachine:
         
         m.clear
         m.home()
-        m.message(10, 10, 5,transl("p4t1")+ str(db_num) +transl("p4t2"), bip=False)
+        #m.message(10, 10, 5,transl("p4t1")+ str(db_num) +transl("p4t2"), bip=False)
+        m.message(10, 10, 5,transl("p4t1") + transl("p4t2"), bip=False)
         self.changeState( self.stateWelcome )
 
 
@@ -1356,8 +1364,12 @@ class StateMachine:
 ###
 def main():
     
-    print( "WISH WIZARD v1.2" )
-    global db_conn, db_cursor, data
+   
+    global db_conn, db_cursor, data, ver
+
+    # Define Version
+    ver = "1.2"
+    print( "WISH WIZARD " , ver)
     # create state machine object
     stateMachine=StateMachine()
     
@@ -1369,7 +1381,7 @@ def main():
     # and decision if local or client on 
     try:
         db_conn = mysql.connector.connect(
-            host = '192.168.1.99',
+            host = '192.168.0.99',
             user = 'utilisateur1',
             password = '',
             database = 'minitel'

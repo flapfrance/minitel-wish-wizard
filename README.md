@@ -13,11 +13,11 @@ needs: If running on RASPI: SSH access & perhaps VNC
 2. Programm needs from mariadb the database 'minitel':
     - Acces with: `sudo mariadb`
         - `CREATE DATABASE minitel;`
-        - `utilisateur1 : CREATE USER 'utilisateur1'@'%';`
+        - utilisateur1 : `CREATE USER 'utilisateur1'@'%';`
         - `GRANT ALL ON *.* TO 'utilisateur1'@'%';`
     
     - Tables: whishes , prefs (are installed on first use of wishwizard.py)
-        - To delete (drop) table : (for maintenance)
+        - To delete (drop) table : (for maintenance or reset)
         - `sudo mariadb`
         - `USE minitel;`
         - `DROP TABLE wishes;`

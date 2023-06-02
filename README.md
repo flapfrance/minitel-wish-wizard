@@ -1,5 +1,5 @@
 # minitel-wish-wizard
-##Wish Wizard system build with old French minitels
+## Wish Wizard system build with old French minitels
 
 1. Installation on Linux oder Raspberry
 needs: If running on RASPI: SSH access & perhaps VNC

@@ -1,7 +1,7 @@
 #/usr/bin/python3
 # -*- coding: utf-8 -*-
-#
-# Thanks to Ocean, JS, Montaulab, Claudine....
+# V1.2
+# Thanks to Ocean, JS, Montaulab, Claudine, CQuest, Musée du minitel....
 #*************************************************************
 import csv, sqlite3, sys, pynitel, serial, mysql.connector, os
 

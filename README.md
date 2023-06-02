@@ -1,6 +1,8 @@
 # minitel-wish-wizard
 ## Wish Wizard system build with old French minitels
 
+Special thanks to cquest and his Python library: https://github.com/cquest/pynitel and all the informations found at the "Musée du minitel" : https://www.museeminitel.fr/
+
 1. Installation on Linux oder Raspberry
 needs: If running on RASPI: SSH access & perhaps VNC
     - mariadb: `sudo apt install mariadb` (auf Raspberrysystem) or `sudo apt install mariadb-server` (auf anderem linux) 

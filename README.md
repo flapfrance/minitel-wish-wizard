@@ -33,7 +33,7 @@ needs: If running on RASPI: SSH access & perhaps VNC to run Raspi headless, I us
         - `sudo systemctl daemon-reload`
     - or for clients oder standalone Raspi's
         - "crontab -e" and "@reboot sleep 60 && cd /home/pi/minitel && /usr/bin/python /home/pi/minitel/wishwizard.py" (`sleep 60` only needed if the dataserver should start first)
-        - oder eventuel mit .desktop  (file in directory)
+        - or perhaps with  .desktop  (file in directory), not tested
    
 4. Network:
     - For multi-minitel installation  create a (wifi) network. Actually the  Programm uses  192.168.0.1-255

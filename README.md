@@ -12,7 +12,7 @@ needs: If running on RASPI: SSH access & perhaps VNC
 
 2. Programm needs from mariadb the database 'minitel':
     - Acces with: sudo mariadb
-        - CREATE DATABASE minitel;
+        - `CREATE DATABASE minitel;`
         - utilisateur1 : CREATE USER 'utilisateur1'@'%';
         - GRANT ALL ON *.* TO 'utilisateur1'@'%';
     

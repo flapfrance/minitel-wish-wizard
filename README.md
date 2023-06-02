@@ -4,7 +4,7 @@
 Special thanks to cquest and his Python library: https://github.com/cquest/pynitel and all the informations found at the "Musée du minitel" : https://www.museeminitel.fr/
 
 1. Installation on Linux oder Raspberry
-needs: If running on RASPI: SSH access & perhaps VNC
+needs: If running on RASPI: SSH access & perhaps VNC to run Raspi headless, I use old 10' Laptops (32 or 64 bits) with Raspberry desktop as Server, and raspberry as clients ( even Raspi 2 works well) 
     - mariadb: `sudo apt install mariadb` (auf Raspberrysystem) or `sudo apt install mariadb-server` (auf anderem linux) 
     - libmariadb-dev: `sudo apt install libmariadb-dev` 
     - python (should be there, higer than  3.0)

@@ -3,7 +3,7 @@
 # V1.2
 # Thanks to Ocean, JS, Montaulab, Claudine, CQuest, Musée du minitel....
 #*************************************************************
-import csv, sqlite3, sys, pynitel, serial, mysql.connector, os
+import csv, sqlite3, sys, pynitel, serial, mysql.connector, os, time
 
 ###
 # Utility functions
@@ -1113,36 +1113,39 @@ class StateMachine:
         print("State Take wish details")
         r = res1[0]
         while True:
-            m.pos(10,4)    
-            m.plot('*', 34)
-            for x in range(11,19):
+           # m.pos(10,4)    
+           # m.plot('*', 34)
+           # added time.sleep to fix a display problem
+            for x in range(9,19):
                 m.pos(x,4)
                 m.plot('*',2)
                 m.pos(x,36)
                 m.plot('*',2)
+                time.sleep(0.2)
             m.pos(19,4)    
-            m.plot('*', 34)
+            m.plot('*',34)
             m.pos(11,6)
             m._print("                              " )
-            strcenter(row = 12,pos=20, txt='Person to surprise:', width=40, size=0)
-            strcenter(row = 14,pos=20, txt=r[5], width=40, size=1)
-            strcenter(row = 15,pos=20, txt="Where to find ?", width=40, size=0)
-            strcenter(row = 17,pos=20, txt=r[7], width=40, size=1)
+            strcenter(row = 11,pos=20, txt='Person to surprise:', width=30, size=0)
+            strcenter(row = 13,pos=20, txt=r[5], width=25, size=1)
+            strcenter(row = 15,pos=20, txt="Where to find ?", width=30, size=0)
+            strcenter(row = 17,pos=20, txt=r[7], width=25, size=1)
+            
             # ligne finale
-            m.pos(21)
+            m.pos(20)
             m.color(m.bleu)
             m.plot('̶', 40)
             
-            m.pos(23, 26)
+            m.pos(21, 24)
             m._print("Home → ")
             m.inverse()
             m.color(m.cyan)
             m._print("SOMMAIRE")
-            m.pos(24, 1)
+            m.pos(22, 1)
             m._print('      ')
             m.color(m.cyan)
             m._print('         ')
-            m.pos(24, 28)
+            m.pos(22, 14)
             m.color(m.vert)
             m._print("Back to Wishlist → ")
             m.inverse()

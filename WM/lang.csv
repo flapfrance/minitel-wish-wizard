@@ -1,7 +1,7 @@
 codetxt;FR;EN;DE;ES
 p1t1;WISH;WISH;WISH;DESEOS
 p1t2;WIZARD;WIZARD;WIZARD;MAGO
-p1t3;Tes rêves deviennent réel;Make dreams come true;Deine Träume werden wahr!;Haz tus sueños realidad
+p1t3;Tes rêves deviennent réel;Make dreams come true;Deine Traeume werden wahr!;Haz tus sueños realidad
 p1t4;Language choice;Language choice;Language choice;Elige tu lenguaje
 p1t5;Français = FR;Français = FR;Français = FR;Français = FR
 p1t6;English = EN;English = EN;English = EN;Ingles = EN
@@ -12,14 +12,14 @@ p1t10;Envoi Code   +; Send Code   +;      Code   +;      Codigo   +
 p1t11;Langue= Français;Language= English;Sprache= Deutsch;Language= Español
 p2t1;WISH;WISH;WISH;DESEO
 p2t2;WIZARD;WIZARD;WIZARD;MAGO
-p2t3;Tes rêves deviennent réel;Make dreams come true;Deine Träume werden wahr!;Haz tus sueños realidad
+p2t3;Tes rêves deviennent réel;Make dreams come true;Deine Traeume werden wahr!;Haz tus sueños realidad
 p2t4;Pour inscrire;To enter your wish;Um deinen Wunsch;Escribe tu deseo
-p2t5;ton souhait; ;einzuschreiben;
+p2t5;ton souhait; ;einzugeben;
 p2t6;choisi;press;druecke;Teclea
 p2t7;1;1;1;1
 p2t8;ou;or;oder;o
 p2t9;Tu es une fée et tu;You are a wizard;Du bist eine Fee und;Eres un mago.a
-p2t10;remplis les souhaits,;and fullfill wishes,;erfuellst Wuensche,;y realizas sueños
+p2t10;remplis les souhaits,;and fulfill wishes,;erfuellst Wuensche,;y realizas sueños
 p2t11;choisi;press;druecke;Teclea
 p2t12;2;2;2;2
 p2t13; +  ; +  ; +  ; +  
@@ -31,43 +31,43 @@ p3t1;WISH;WISH;WISH;DESEO
 p3t2;WIZARD;WIZARD;WIZARD;MAGO
 p3t3;Entre ton souhait!;Enter your wish!;Gib deinen Wunsch ein.;Inserte tu deseo !
 p3t4;Mais attention, il;But be aware, your wish;Aber Achtung,;Pero estes preparado, tu deseo
-p3t5;peut devenir réalité!;may become true!;er könnte wahr werden!;puede realizarse !
+p3t5;peut devenir réalité!;may become true!;er koennte wahr werden!;puede realizarse !
 p3t6;Titre:;Title:;Titel:;Título:
-p3t7;Description: ;Description:;Erklärung:;Descripción
+p3t7;Description: ;Description:;Erklaerung:;Descripción
 p3t8;+18 Y/N:;+18 Y/N:;+18 Y/N;+18 Y/N:
 p3t9;Ton Nom:;Your Name:;Dein Name:;Su nombre:
 p3t10;Ou te trouver:;Your Place:;Standort:;Tu sitio:
-p3t11;* = requis;* = Field required;* = erfordelich;* = obligatorio
-p3t12;Ligne suiv.;Next Line → ;Nächste   →;Linea siguiente → 
+p3t11;* = requis;* = Field required;* = erforderlich;* = obligatorio
+p3t12;Ligne suiv.;Next Line → ;Naechste   →;Linea siguiente → 
 p3t13;Ligne préc.;Prev Line →;Vorherige →;Linea precedente→
 p3t14;Sauvegarder→;      Save →; Speichern →;     Registrar →
-p3t15;  Home →;  Home →;Zurück →;  Home →
+p3t15;  Home →;  Home →;Zurueck →;  Home →
 p4t1;Souhait ;Wish ;Wunsch ;Deseo
 p4t2; enregistré!; saved!; gespeichert!;registrado!
-p5t1;Les souhaits actuels:;Actual Wishes:;Aktuelle Wünsche:;Todos los deseos:
+p5t1;Les souhaits actuels:;Actual Wishes:;Aktuelle Wuensche:;Todos los deseos:
 p5t2;Ton choix:;Your Choice:;Deine Wahl:;Tu elección:
 p5t3;  + →;  + →;  + →;  + →
 p5t4;Aide →;Help →;Hilfe→;Manual →
 p5t5;Home →;Home →;Home →;Home →
-p5t6;Page suiv. →;Next page →;Nächste →;Linea siguiente → 
+p5t6;Page suiv. →;Next page →;Naechste →;Linea siguiente → 
 p5t7;Page prec. →;Prev.page →;Vorherige →;Linea precedente→
-p5t8;Pas encore des souhaits insciit!;No wishes inscribed yet!;Noch keine Wünsche eingetragen!;Ninguno deseos por ahora
+p5t8;Pas encore des souhaits insciit!;No wishes inscribed yet!;Noch keine Wuensche eingetragen!;Ninguno deseos por ahora
 p5t9;Contenu adulte, pas d accès;ADULT CONTENT – No ACCESS;Inhalt für Erwachsene – Kein Zugriff;CONTENIDO ADULTO– No ACCESSO
-p6t1;Souhait plustôt adulte;Possible ADULT conten;Môglicherweise ein 18+ Wunsch;Possible contenido ADULTO
-p6t2;   Pour accédé à ce souhait; To access this wish, please  ; Um diesen Wunsch kennenzulernen ;Para aceder el deseo, por favor
-p6t3;     tape le code secret:    ;    enter the secret code:    ;    den Geheimcode benutzen:    ;inserte el codigo secreto
-p6t4;   Astuce: Faire l amour à; Hint: Making Love with 5 pers.; Hint: Liebe machen zu  fünft;Pinsta: sexo con 5 personas
-p6t5;       5 pers. (5 numbers)  ;          (5 numbers)         ;          (5 zahlen)         ;          (5 numeros)         
-p6t6;"  ;-) ou demande au tour ;-) ";"      ;-) Or, ask around ;-)   ";"      ;-) oder herumfragen ;-)   ";"      ;-) O, pregunta a los alrededores ;-)   "
+p6t1;Souhait plustôt adulte;Possible ADULT conten;Moeglicherweise ein 18+ Wunsch;Possible contenido ADULTO
+p6t2;   Pour accédé à ce souhait; To access this wish, please  ; Um diesen Wunsch aufzurufen ;Para aceder el deseo, por favor
+p6t3;     tape le code secret:    ;    enter the secret code:    ;   gib den Geheimcode ein:    ;inserte el codigo secreto
+p6t4;   Astuce: Faire l amour à; Hint: Making Love with 5 pers.; Tip: Liebe machen zu fuenft; Pinsta: sexo con 5 personas
+p6t5;       5 pers. (5 numbers)  ;          (5 numbers)         ;          (5 Zahlen)         ;          (5 numeros)         
+p6t6;"  ;-) ou demande au tour ;-) ";"      ;-) Or, ask around ;-)   ";"   ;-) oder frag herum ;-)   ";"      ;-) O, pregunta a los alrededores ;-)   "
 p6t7; ; ; ; 
-p7t1;Tu as choisi le souhait N°;You have choosen Wish n° ;Du hast diesn Wunsch gewählt n° ;Has eligido el deseo n° 
+p7t1;Tu as choisi le souhait N°;You have chosen wish n° ;Du hast diesen Wunsch gewaehlt n° ;Has eligido el deseo n° 
 p7t2;Titre:;Title:;Titel:;Titulo:
 p7t3;Desc.:;Desc.:;Besch.:;Desc:
-p7t4;    Pour réaliser ce voeux  ;    To fullfill this wish,    ;   Um diesen  Wunsch zu     ;    Para cumplir este deseo,    
-p7t5;           stp tape   ;         please enter         ;         Erfüllen, gib         ;por favor, entre
+p7t4;    Pour réaliser ce voeux  ;    To fulfill this wish,    ;   Um diesen Wunsch zu     ;    Para cumplir este deseo,    
+p7t5;           stp tape   ;         please enter         ;    erfuellen, gib       ;por favor, entre
 p7t6;         OUI JE VEUX         ;         YES I WILL         ;         JA ICH WILL ;         YO LES         
-p7t7;   Après, chère fée, ;   Then, beautifull wizzard   ;   ein, Dann , schöne Fee, ist  ;   Then, beautifull wizzard   
-p7t8; tu est engagé de le remplir! ; you are engaged to fullfill! ; es an dir ihn zu erfüllen.; you are engaged to fullfill! 
+p7t7;   Après, chère fée, ;   Then, beautiful wizard   ;   ein. Dann, schoene Fee, ;   Then, beautiful wizard   
+p7t8; tu est engagé de le remplir! ; you are engaged to fulfill! ; solltst du ihn erfuellen.; you are engaged to fulfill! 
 p7t9;Home → ;Home → ;Home → ;Home → 
 p7t10;+ → ;+ → ;+ → ;+ → 
 p7t11;Back → ;Back → ;Back → ;Back → 
@@ -76,20 +76,20 @@ p8t1;  WISH;  WISH;  WISH;  WISH
 p8t2;WIZARD;WIZARD;WIZARD;WIZARD
 p8t3;Manual;Manual;Anleitung;Instrucciones
 p8t4;à lire!;READ THIS!;Bitte lesen!;por favor leer
-p8t5;"Le ""Wish Wizard"" réalise des souhaits";"The ""Wish Wizard"" fulfills wishes";"Der ""Wish Wizard"" erfüllt Wünsche    ";"El ""Wish Wizard"" cumple deseos"
+p8t5;"Le ""Wish Wizard"" réalise des souhaits";"The ""Wish Wizard"" fulfills wishes";"Der ""Wish Wizard"" erfuellt Wuensche    ";"El ""Wish Wizard"" cumple deseos"
 p8t6;et te transforme en sorcier.;and transforms you into a wizard.;und verwandelt dich in einen Zauberer.;y te transforma en un mago.
 p8t7;Enregistre ton souhait sur la page prévue.;Enter your wish on the designated page.;Trage deinen Wunsch auf vorgesehener ;Ingresa tu deseo en la página designada.
 p8t8;Toutes les fonctions sont répertoriées;All functions are listed below;Seite ein. Alle Funktionen sind unten;Todas las funciones se enumeran abajo
-p8t9;en bas de la page. ;on the page.;auf der Seite aufgeführt.;en la página. 
+p8t9;en bas de la page. ;on the page.;auf der Seite aufgefuehrt.;en la página. 
 p8t10;Attention, sorcier !;;Bist du ein Wizard, Achtung!    ;¿Eres un mago? ¡Cuidado! 
-p8t11;"Les souhaits ""+18"" nécessitent un code !"; Are you a wizard?;"""+18"" Wünsche benötigen einen Code!    ";"Los deseos ""+18"" requieren un código."
+p8t11;"Les souhaits ""+18"" nécessitent un code !"; Are you a wizard?;"""+18""Wuensche benoetigen einen Code!    ";"Los deseos ""+18"" requieren un código."
 p8t12;Un souhait en cours de traitement,;"Caution! ""+18"" wishes require a code!";Ist ein Wunsch in Bearbeitung, kann;Si un deseo está siendo procesado,
-p8t13;peut quand même être réalisé à nouveau.;If a wish is being processed,;er trotzdem erneut erfüllt werden.;aún se puede cumplir de nuevo.
+p8t13;peut quand même être réalisé à nouveau.;If a wish is being processed,;er trotzdem erneut erfuellt werden.;aún se puede cumplir de nuevo.
 p8t14;Le Minitel réagit lentement, attends;it can still be fulfilled again.;Das Minitel reagiert langsam, warte;El Minitel responde lentamente, espera
 p8t15;après avoir saisi ta demande jusqu'à ce que le sorcier;The Minitel responds slowly, wait after;nach deiner Eingabe bis der ;después de ingresar hasta que el mago responda.
 p8t16;ce que l'écran à réagi.;your input until the screen responds.;Bildschirm reagiert.    ;¡Diviértete, déjate hechizar!
-p8t17;Amuse-toi bien et laisse-toi enchanter !;Have fun, let yourself be enchanted!;Viel Spaß, lass dich verzaubern!;
+p8t17;Amuse-toi bien et laisse-toi enchanter !;Have fun, let yourself be enchanted!;Viel Spass, lass dich verzaubern!;
 p8t18;;;;
-;;;Wunsch kann trotzdem erfüllt;
-;;;werden. Viel Spaß und lass;
+;;;Wunsch kann trotzdem erfuellt;
+;;;werden. Viel Spass und lass;
 ;;;* dich verzaubern!;

@@ -142,7 +142,7 @@ class StateMachine:
         print("~~~ Initialisation ~~~")        
         print("Minitel init")
         global m, lang, th1,data,sltime
-        lang = "DE"
+        lang = "EN"
         sltime = 120
         
         m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))

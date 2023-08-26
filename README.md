@@ -2,7 +2,7 @@
 ## Wish Wizard system build with old French minitels
 
 <img src="https://github.com/flapfrance/minitel-wish-wizard/blob/main/WW_QR.png" width=10% height=10%>
-###This is the Link to the FB page, for more Informations and for the user to share there experience!
+### This is the Link to the FB page, for more Informations and for the user to share there experience!
 
 Special thanks to cquest and his Python library: https://github.com/cquest/pynitel and all the informations found at the "Musée du minitel" : https://www.museeminitel.fr/
 

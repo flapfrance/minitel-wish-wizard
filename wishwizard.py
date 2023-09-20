@@ -114,8 +114,8 @@ def printCheck():
     #print(r1[3]+","+r1[4]+","+r1[5])
     #print(str(hex(1208)), str(hex(3615)))
     #print(r1[3], r1[4], int(r1[5]))   #print(hex(int(r1[3],0)), hex(int(r1[4],0)))
-    x = 0x04b8
-    y = 0x0e1f
+    #x = 0x04b8
+    #y = 0x0e1f
     #x = r1[3]+", "+r1[4]+", "+r1[5]
     #print(Usb(int(r1[3],0)), int(r1[4],0))))
     #print(help(Usb(x,y)))
@@ -124,7 +124,6 @@ def printCheck():
     try:        
         p = Usb(0x04b8, 0x0e1f)#, 0)#, 0x81, 0x1)
         #p = Usb(str(hex(1208)), str(hex(3615))), 0)#, 0x81, 0x1)
-
         #print(hex(int(r1[3][2:],0)), hex(int(r1[4],0)), 0)#, 0x81, 0x1) 
         #p = Usb(r1[3],r1[4])#, 0x81, 0x1) 
         #print(p)

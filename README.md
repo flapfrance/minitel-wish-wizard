@@ -42,14 +42,16 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
 4. Printer:
    
     - install the python biblioteque: `pip install python-escpos[all]`
-    - Find out the hex values of your printer: `lsusb`
-    - note the `ID xxxx:yyyy`    
-    - Create  a udev rule for the printer: `sudo nano /etc/udev/rules.d/99-escpos.rules` . 
-    - Insert `SUBSYSTEM=="usb", ATTRS{idVendor}=="xxxx", ATTRS{idProduct}=="yyyy", MODE="0666", GROUP="dialout"`
-    - Then: `sudo service udev restart`
-    - Add the Hexvalues to the programm via the preferences page (NOTYETREADY)
-    actual it need to be inserted in to the code around line 108 in the def printCheck()
-   
+    - For USB printers:
+        - Find out the hex values of your printer: `lsusb`
+        - note the `ID xxxx:yyyy`    
+        - Create  a udev rule for the printer: `sudo nano /etc/udev/rules.d/99-escpos.rules` . 
+        - Insert `SUBSYSTEM=="usb", ATTRS{idVendor}=="xxxx", ATTRS{idProduct}=="yyyy", MODE="0666", GROUP="dialout"`
+        - Then: `sudo service udev restart`
+        - Add the Hexvalues to the programm via the preferences page (NOTYETREADY)
+        actual it need to be inserted in to the code around line 108 in the def printCheck()
+   - for serial printers:
+       -not ready, but prepared in the code have a look in def printCheck() line 108
 4. Network:
     - For multi-minitel installation  create a (wifi) network. Actually the  Programm uses  192.168.0.1-255
     Server is on 192.168.0.99. If there are Networkproblems change IP adresse in "wishwizard.py" (around line 1384).

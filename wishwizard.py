@@ -3,8 +3,8 @@
 # V1.2
 # Thanks to Ocean, JS, Montaulab, Claudine, CQuest, Musée du minitel....
 #*************************************************************
-import csv, sqlite3, sys, pynitel, serial, mysql.connector, os, time
-
+import csv, sqlite3, sys, pynitel, serial, mysql.connector, os, time, subprocess
+from escpos.printer import *
 ###
 # Utility functions
 ####
@@ -102,10 +102,50 @@ def strformat(left='', right='', fill=' ', width=40):
         out = left+right
     print("'"+out+"'", width, total, len(out))
     return(out)
-        
-###
+
+#******Print prepa & check******************************
+
+def printCheck():
+    global p, pV
+    db_cursor1 = db_conn.cursor() 
+    db_cursor1.execute("SELECT * FROM pref")        
+    res1 = db_cursor1.fetchall()
+    r1= res1[0]
+    #print(r1[3]+","+r1[4]+","+r1[5])
+    #print(str(hex(1208)), str(hex(3615)))
+    #print(r1[3], r1[4], int(r1[5]))   #print(hex(int(r1[3],0)), hex(int(r1[4],0)))
+    x = 0x04b8
+    y = 0x0e1f
+    #x = r1[3]+", "+r1[4]+", "+r1[5]
+    #print(Usb(int(r1[3],0)), int(r1[4],0))))
+    #print(help(Usb(x,y)))
+    #p = Usb(x,y)
+    
+    try:        
+        p = Usb(0x04b8, 0x0e1f)#, 0)#, 0x81, 0x1)
+        #p = Usb(str(hex(1208)), str(hex(3615))), 0)#, 0x81, 0x1)
+
+        #print(hex(int(r1[3][2:],0)), hex(int(r1[4],0)), 0)#, 0x81, 0x1) 
+        #p = Usb(r1[3],r1[4])#, 0x81, 0x1) 
+        #print(p)
+        #p = Usb(hex(int(r1[3],0)), hex(int(r1[4],0)), 0)#, 0x81, 0x1) 
+        #p = Usb()
+        pV = True
+    except:
+        pV = False
+        print("USBPrinter ? ", pV)
+    if pV == False:
+        try:        
+            p = Serial('/dev/ttyS0',9600,8,1) #oder so,         
+            pV = True
+        except:
+            pV = False
+            print("SerialPrinter ? ", pV)
+    return(pV)
+
+####################################
 # State machine aka "The brain"
-###
+####################################
 class StateMachine:
     def __init__( self ):
         self.stack = []
@@ -141,11 +181,24 @@ class StateMachine:
     def stateInit( self, entering  ):
         print("~~~ Initialisation ~~~")        
         print("Minitel init")
-        global m, lang, th1,data,sltime
+        global m, lang, th1,data,sltime,p, pV
         lang = "EN"
         sltime = 120
-        
-        m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
+
+        #m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
+        #echo -en '\x1b\x3a\x6b\x76' > /dev/ttyAMA0
+        #subprocess.run(["echo", "\x1b\x3a\x6b\x76",  ">", "/dev/ttyUSB0"])
+        os.system("stty -F /dev/ttyUSB0 speed 1200")
+        os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0")
+        os.system("stty -F /dev/ttyUSB0 speed 4800")
+        m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 4800, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
+        ####*******Prepare printer
+        #try:
+            #p = Usb(0x04b8, 0x0e1f, 0, 0x81, 0x1) # TRY HINZUFÜGEN
+           # pV = True
+        #except:
+            #pV = False
+        print("Printer? ", printCheck())
         self.changeState( self.stateLanguage )
        
     def stateWishPic( self, entering  ):
@@ -178,7 +231,7 @@ class StateMachine:
         if touche != "" or choix1 != "" :
             self.changeState( self.stateWelcome )
             
-    def statePrefs(self, entering): # Prefs: timer screensave, perhaps 
+    def statePrefs(self, entering): # Prefs: timer screensave, perhaps, Printer 
         print("State Preferences")
         global m,wish1, wish2, lang,sltime, db_cursor     
         m.resetzones()
@@ -191,8 +244,11 @@ class StateMachine:
         r = res[0]        
         m.zone(7, 15, 23, r[1], m.blanc)        
         m.zone(9, 15, 23, str(r[2]), m.blanc)
-        m.zone(11, 15, 23, "NO", m.blanc)
-        m.zone(13, 15, 23, "NO", m.blanc)
+        m.zone(11, 15, 23, str(r[3]), m.blanc)
+        m.zone(13, 15, 23, str(r[4]), m.blanc)
+        m.zone(15, 15, 23, str(r[5]), m.blanc)
+        m.zone(17, 15, 23, "NO", m.blanc)
+        m.zone(19, 15, 23, "NO", m.blanc)
         r = res[0]        
         touche = m.repetition
         zone = 1
@@ -219,9 +275,9 @@ class StateMachine:
             m._print(''+ strformat(left="Local / IP"[:11],right="*........................" , width=39))
             m.pos(9)
             m._print(''+ strformat(left="Time sleep"[:11],right="*........................" , width=39))            
-            m.pos(11)
+            m.pos(17)
             m._print(''+ strformat(left="Reboot"[:11],right="*........................" , width=39))            
-            m.pos(13)
+            m.pos(19)
             m._print(''+ strformat(left="Shutdown"[:11],right="*........................" , width=39))            
 
 # ligne finale
@@ -270,9 +326,10 @@ class StateMachine:
                 choice = ""
                 if m.zones[0] =="":
                     m.zones[0] = "localhost"
-                prefs = (m.zones[0]['texte'], m.zones[1]['texte'])
+                prefs = (m.zones[0]['texte'], m.zones[1]['texte'], m.zones[2]['texte'], m.zones[3]['texte'], m.zones[4]['texte'])
                 #print(prefs)
-                sql = "UPDATE pref SET id = 1, IP_adr = %s, timer = %s WHERE id = 1"                      
+                
+                sql = "UPDATE pref SET id = 1, IP_adr = %s, timer = %s, p_idVend = %s, p_idProd = %s, p_timer = %s  WHERE id = 1"                      
                 # Execute SQL statement with provided values
                 db_cursor.execute(sql, prefs)
                 db_conn.commit()
@@ -290,13 +347,14 @@ class StateMachine:
             m.home()
             m.message(15, 7, 3,"Go to reboot ", bip=True)
             m.home()
-            os.system('reboot')
+            os.system('shutdown now -h')
+            
             
         elif touche == 3 and m.zones[3]['texte'] == "YES":
             m.home()
             m.message(15, 7, 3,"Go to shutdown", bip=True)
             m.home()
-            os.system('shutdown now')
+            os.system('shutdown now -h')
         elif touche == 6:
             self.changeState( self.stateWelcome )
         else:
@@ -507,7 +565,7 @@ class StateMachine:
         #elif  touche == m.chariot:
             #print("!!!Last key: " + str(m.key()))                
         elif touche == m.envoi and choix1 == 2 :
-            self.changeState( self.stateWishread1 )
+            self.changeState( self.stateWishread0 )
         elif touche == m.envoi and choix1 == 99 :
             self.changeState( self.stateWishdelete )
         elif touche == m.envoi and choix1 == 98 :
@@ -759,11 +817,14 @@ class StateMachine:
         m.message(10, 10, 5,transl("p4t1") + transl("p4t2"), bip=False)
         self.changeState( self.stateWelcome )
 
-
+    def stateWishread0( self, entering ):
+        global  page, m, choix, choix_lfd, lang, sltime, db_conn ,db_cursor
+        page = 1
+        self.changeState( self.stateWishread1)
     def stateWishread1( self, entering  ):
         
         print("State read wish titel")
-        global  m, choix, choix_lfd, lang, sltime, db_conn ,db_cursor
+        global  m, choix, choix_lfd, lang, sltime, db_conn ,db_cursor, page
         choix = 0
         touche = 0
         db_conn.commit()
@@ -782,7 +843,7 @@ class StateMachine:
         m.resetzones()
         m.zone(22, 28, 30, '', m.blanc)
         m.pos(2)
-        page = 1
+        #page = 1
         while True:                      
             if db_num > 0:  # affichage
             # entête sur 2 lignes + séparation
@@ -790,7 +851,7 @@ class StateMachine:
                 m.pos(0)
                 m._print(transl("p5t1"))
                 if db_num != '':
-                    m.pos(0, 39)
+                    #m.pos(0, 36)
                     m.color(m.bleu)
                     m._print(str(db_num))
                 m.pos(2)
@@ -926,7 +987,8 @@ class StateMachine:
                 r = res[choix-1]                
                 choix_lfd = r[0]
                 break
-                
+            elif touche == m.annulation:
+                break
             elif touche == m.guide:
                 break
             elif touche == m.sommaire: 
@@ -1103,7 +1165,7 @@ class StateMachine:
         
             
     def stateWishtake( self, entering  ):
-        global choix, db_cursor,choix_lfd, lang, sltime
+        global choix, db_cursor,choix_lfd, lang, sltime, p, pV
         db_conn.commit()
         db_cursor.close() #Close DB
         db_cursor = db_conn.cursor() #Open db 
@@ -1126,9 +1188,9 @@ class StateMachine:
             m.plot('*',34)
             m.pos(11,6)
             m._print("                              " )
-            strcenter(row = 11,pos=20, txt='Person to surprise:', width=30, size=0)
+            strcenter(row = 11,pos=20, txt=transl("p9t1"), width=30, size=0)
             strcenter(row = 13,pos=20, txt=r[5], width=25, size=1)
-            strcenter(row = 15,pos=20, txt="Where to find ?", width=30, size=0)
+            strcenter(row = 15,pos=20, txt=transl("p9t2"), width=30, size=0)
             strcenter(row = 17,pos=20, txt=r[7], width=25, size=1)
             
             # ligne finale
@@ -1136,7 +1198,7 @@ class StateMachine:
             m.color(m.bleu)
             m.plot('̶', 40)
             
-            m.pos(21, 24)
+            m.pos(23, 24)
             m._print("Home → ")
             m.inverse()
             m.color(m.cyan)
@@ -1151,27 +1213,80 @@ class StateMachine:
             m.inverse()
             m.color(m.cyan)
             m._print("RETOUR")
-            
-         # attente saisie
+            m.pos(21, 19)
             m.cursor(False)
-            (choix1, touche) = m.input(23, 1, 0, sltime)
-            
+            pV = printCheck()
+            if pV == True:
+                m._print("PRINT Y/N ")
+                m.pos(21, 31)
+                m._print("→  ")
+                m.inverse()
+                m.color(m.cyan)
+                m._print("ENVOI")
+                m.cursor(True)  
+                (choix1, touche) = m.input(21, 29, 1, sltime)
+            else:
+                (choix1, touche) = m.input(21, 1, 0, sltime)
+
+            # attente saisie
             if touche == m.suite:
                 m.bip()
             elif touche == m.retour:
                 break 
             elif touche == m.envoi:
                 break       
-            elif touche == m.sommaire or touche == m.envoi:
-                self.changeState( self.stateWelcome )
-                break
+            elif touche == m.sommaire :
+                break                
             elif touche == m.correction:  # retour saisie pour correction
                 return(touche)
-            elif touche != m.repetition:
-                m.bip()
+            #elif touche != m.repetition:
+                #m.bip()
         if touche == m.retour :
-            self.changeState( self.stateWishread1 ) 
+            self.changeState( self.stateWishread1 )
+        elif touche == m.sommaire :
+            self.changeState( self.stateWelcome )
+        elif touche == m.envoi :    
+            if choix1 =="Y" and pV == True:
+                printCheck()
+                print("Print")
+                
+                p.text("\n")
+                p.image("./WM/text236.png")
+                p.set(font='a', height=2, width=1, align='center', text_type='bold')
+                p.text("\n")
+                p.text(str(r[1]))
+                p.text("\n \n")
+                p.set(font='a', height=1, width=1, align='center', text_type='bold')
+                p.text(str(r[2]))
+                p.text("\n")
+                p.text(r[3]) if not r[3]=="" else print("Reingelegt r3")
+                p.text("\n")
+                p.text(r[4]) if not r[4]=="" else print("Reingelegt R4")
+                p.text("\n \n")
+                p.text(transl("p9t1"))
+                p.text("\n")
+                p.set(font='a', height=2, width=1, align='center', text_type='bold')
+                p.text(str(r[5]))
+                p.set(font='a', height=1, width=1, align='center', text_type='bold')
+                p.text("\n \n")
+                p.text(transl("p9t2"))
+                p.text("\n")
+                p.set(font='a', height=2, width=1, align='center', text_type='bold')
+                p.text(str(r[7]))
+                p.set(font='a', height=1, width=1, align='center', text_type='bold')
+                p.text("\n \n")
+                
+                p.text("More informations or \n")
+                p.text("share your experience\n")
+                p.text("check the QR code!\n")
+                p.qr('WISH WIZARD;https://www.facebook.com/100094642188364',0,5,2)
+                #p.set(font='b', height=2, width=2, align='center', text_type='bold')
+                p.text("_________________________")                
+                p.cut()
+                p=[]
+                #p.hw("RESET")
 
+            
     def stateWishdelete( self, entering  ):
         
         print("State Delete datas ")
@@ -1371,7 +1486,7 @@ def main():
     global db_conn, db_cursor, data, ver
 
     # Define Version
-    ver = "1.2"
+    ver = "1.35"
     print( "WISH WIZARD " , ver)
     # create state machine object
     stateMachine=StateMachine()
@@ -1384,7 +1499,7 @@ def main():
     # and decision if local or client on 
     try:
         db_conn = mysql.connector.connect(
-            host = '192.168.0.99',
+            host = '192.168.1.99',
             user = 'utilisateur1',
             password = '',
             database = 'minitel'
@@ -1414,20 +1529,23 @@ def main():
         fullfilled VARCHAR(1)
         );"""
     db_cursor.execute(sql_anweisung1)
-    # Überprüfen, ob die Tabelle existiert
+    # Überprüfen, ob die Tabelle existiert for preferences
     db_cursor.execute("SHOW TABLES LIKE 'pref'")
     table_exists = db_cursor.fetchone()
-
+    #Usb(0x04b8, 0x0e1f, 0, 0x81, 0x1)
     # Wenn die Tabelle noch nicht existiert, Tabelle erstellen und Daten einfügen
     if not table_exists:
         db_cursor.execute("""
             CREATE TABLE pref (
                 id INT PRIMARY KEY,
                 IP_adr VARCHAR(50),
-                timer INT
+                timer INT,
+                p_idVend VARCHAR(6),
+                p_idProd VARCHAR(6),
+                p_timer VARCHAR(1)
             )
         """)
-        db_cursor.execute("INSERT INTO pref (id, IP_adr, timer) VALUES (1, 'localhost', 30)")
+        db_cursor.execute("INSERT INTO pref (id, IP_adr, timer, p_idVend, p_idProd, p_timer  ) VALUES (1, 'localhost', 30,'','','')")
         # Transaktion bestätigen
         db_conn.commit()
         print("Tabelle erstellt und Daten eingefügt.")

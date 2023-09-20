@@ -42,7 +42,7 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
 4. Printer:
    
     - install the python biblioteque: `pip install python-escpos[all]`
-    - Find out the hex values of yur printer: 'lsusb
+    - Find out the hex values of your printer: `lsusb`
     - note the `ID xxxx:yyyy`    
     - Create  a udev rule for the printer: `sudo nano /etc/udev/rules.d/99-escpos.rules` . 
     - Insert `SUBSYSTEM=="usb", ATTRS{idVendor}=="xxxx", ATTRS{idProduct}=="yyyy", MODE="0666", GROUP="dialout"`

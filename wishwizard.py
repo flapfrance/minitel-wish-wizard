@@ -1,6 +1,6 @@
 #/usr/bin/python3
 # -*- coding: utf-8 -*-
-# V1.2
+# V1.35
 # Thanks to Ocean, JS, Montaulab, Claudine, CQuest, Musée du minitel....
 #*************************************************************
 import csv, sqlite3, sys, pynitel, serial, mysql.connector, os, time, subprocess

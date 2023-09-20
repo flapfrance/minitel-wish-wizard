@@ -1242,7 +1242,7 @@ class StateMachine:
             #elif touche != m.repetition:
                 #m.bip()
         if touche == m.retour :
-            self.changeState( self.stateWishread1 )
+            self.changeState( self.stateWishread0 )
         elif touche == m.sommaire :
             self.changeState( self.stateWelcome )
         elif touche == m.envoi :    

@@ -39,7 +39,20 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
     - or for clients oder standalone Raspi's
         - "crontab -e" and "@reboot sleep 60 && cd /home/pi/minitel && /usr/bin/python /home/pi/minitel/wishwizard.py" (`sleep 60` only needed if the dataserver should start first)
         - or perhaps with  .desktop  (file in directory), not tested
-   
+4. Printer:
+    - 
+    - Find out the hex values of yur printer: 'lsusb'
+    note the 'ID xxxx:yyyy'
+    - Create  a udev rule for the printer: 'sudo nano /etc/udev/rules.d/99-escpos.rules' . Insert
+    - Insert 'SUBSYSTEM=="usb", ATTRS{idVendor}=="xxxx", ATTRS{idProduct}=="yyyy", MODE="0666", GROUP="dialout"'
+    - sudo service udev restart
+
+is the command I use to edit the file, and this is what's inside
+
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0fe6", ATTRS{idProduct}=="811e", MODE="0664", GROUP="dialout"
+
+after changing anything in that file, I run this code:' 
+    
 4. Network:
     - For multi-minitel installation  create a (wifi) network. Actually the  Programm uses  192.168.0.1-255
     Server is on 192.168.0.99. If there are Networkproblems change IP adresse in "wishwizard.py" (around line 1384).

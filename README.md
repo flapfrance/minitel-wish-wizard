@@ -42,10 +42,10 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
 4. Printer:
     - 
     - Find out the hex values of yur printer: 'lsusb'
-    note the 'ID xxxx:yyyy'
-    - Create  a udev rule for the printer: 'sudo nano /etc/udev/rules.d/99-escpos.rules' . Insert
-    - Insert 'SUBSYSTEM=="usb", ATTRS{idVendor}=="xxxx", ATTRS{idProduct}=="yyyy", MODE="0666", GROUP="dialout"'
-    - sudo service udev restart
+    note the `ID xxxx:yyyy`
+    - Create  a udev rule for the printer: `sudo nano /etc/udev/rules.d/99-escpos.rules` . Insert
+    - Insert `SUBSYSTEM=="usb", ATTRS{idVendor}=="xxxx", ATTRS{idProduct}=="yyyy", MODE="0666", GROUP="dialout"`
+    - Then: `sudo service udev restart`
 
 is the command I use to edit the file, and this is what's inside
 

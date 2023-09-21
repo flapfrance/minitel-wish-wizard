@@ -56,7 +56,7 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
        - If there is no USB printer the programm looks for a serial one. In the pref page you should write "/dev/tty0" or similair inthe first field.
 4. Network:
     - For multi-minitel installation  create a (wifi) network. Actually the  Programm uses  192.168.0.1-255
-    Server is on 192.168.0.99. If there are Networkproblems cha/dev/usb/lp1nge IP adresse in "wishwizard.py" (around line 1384).
+    Server is on 192.168.0.99. If there are Networkproblems change IP adresse in "wishwizard.py" (around line 1384).
     The clients can be attached via DHCP
 
 5. Special codes: 

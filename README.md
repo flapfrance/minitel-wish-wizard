@@ -40,9 +40,9 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
     - or for clients oder standalone Raspi's
         - "crontab -e" and "@reboot sleep 60 && cd /home/pi/minitel && /usr/bin/python /home/pi/minitel/wishwizard.py" (`sleep 60` only needed if the dataserver should start first)
         - or perhaps with  .desktop  (file in directory), not tested
-4. Printer:
+4. Printer (Thermal):
    
-    - install the python biblioteque: `pip install python-escpos[all]`
+    - install the python bibliotheque: `pip install python-escpos[all]`
     - For USB printers:
         - Find out the hex values of your printer: `lsusb`
         - note the `ID xxxx:yyyy`    

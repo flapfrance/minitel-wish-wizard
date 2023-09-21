@@ -111,25 +111,19 @@ def printCheck():
     db_cursor1.execute("SELECT * FROM pref")        
     res1 = db_cursor1.fetchall()
     r1= res1[0]
-    #print(r1[3]+","+r1[4]+","+r1[5])
-    #print(str(hex(1208)), str(hex(3615)))
-    #print(r1[3], r1[4], int(r1[5]))   #print(hex(int(r1[3],0)), hex(int(r1[4],0)))
-    #x = 0x04b8
-    #y = 0x0e1f
+    x = 0x04b8
+    y = 0x0e1f
     #x = r1[3]+", "+r1[4]+", "+r1[5]
     #print(Usb(int(r1[3],0)), int(r1[4],0))))
     #print(help(Usb(x,y)))
-    #p = Usb(x,y)
     
-    try:        
-        p = Usb(0x04b8, 0x0e1f)#, 0)#, 0x81, 0x1)
-        #p = Usb(str(hex(1208)), str(hex(3615))), 0)#, 0x81, 0x1)
-        #print(hex(int(r1[3][2:],0)), hex(int(r1[4],0)), 0)#, 0x81, 0x1) 
-        #p = Usb(r1[3],r1[4])#, 0x81, 0x1) 
-        #print(p)
-        #p = Usb(hex(int(r1[3],0)), hex(int(r1[4],0)), 0)#, 0x81, 0x1) 
-        #p = Usb()
+    print(hex(int(r1[3],16)), hex(int(r1[4],16)), 0)#, 0x81, 0x1) 
+    print( x, y)
+    
+    try:
+        p = Usb(int(r1[3],16), int(r1[4],16))   
         pV = True
+        print("USBPrinter ? ", pV)
     except:
         pV = False
         print("USBPrinter ? ", pV)
@@ -137,6 +131,7 @@ def printCheck():
         try:        
             p = Serial('/dev/ttyS0',9600,8,1) #oder so,         
             pV = True
+            print("Serial Printer ? ", pV)
         except:
             pV = False
             print("SerialPrinter ? ", pV)
@@ -182,21 +177,15 @@ class StateMachine:
         print("Minitel init")
         global m, lang, th1,data,sltime,p, pV
         lang = "EN"
-        sltime = 120
-
-        #m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
-        #echo -en '\x1b\x3a\x6b\x76' > /dev/ttyAMA0
-        #subprocess.run(["echo", "\x1b\x3a\x6b\x76",  ">", "/dev/ttyUSB0"])
-        os.system("stty -F /dev/ttyUSB0 speed 1200")
-        os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0")
-        os.system("stty -F /dev/ttyUSB0 speed 4800")
+        sltime = 120        
+        m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
+        print(os.system("stty -F /dev/ttyUSB0 speed 1200"))
+        print(os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0"))
+        print(os.system("stty -F /dev/ttyUSB0 speed 4800"))
+        os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0") 
         m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 4800, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
         ####*******Prepare printer
-        #try:
-            #p = Usb(0x04b8, 0x0e1f, 0, 0x81, 0x1) # TRY HINZUFÜGEN
-           # pV = True
-        #except:
-            #pV = False
+        
         print("Printer? ", printCheck())
         self.changeState( self.stateLanguage )
        

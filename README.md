@@ -62,6 +62,6 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
 5. Special codes: 
     - On pages Choices (1 or 2) :
         - 99 to open delete whishes page
-        - 98 preferences (NOT READY YET)
+        - 98 preferences (Timer for Screensaver, and Hexcodes for USBprinters works well , the rest is wip)
 6. Possible changes in the code:
     - Language at start: (around Line 145 ) lang = "DE" (or FR, EN, or ES)

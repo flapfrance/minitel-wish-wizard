@@ -48,13 +48,14 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
         - Create  a udev rule for the printer: `sudo nano /etc/udev/rules.d/99-escpos.rules` . 
         - Insert `SUBSYSTEM=="usb", ATTRS{idVendor}=="xxxx", ATTRS{idProduct}=="yyyy", MODE="0666", GROUP="dialout"`
         - Then: `sudo service udev restart`
-        - Add the Hexvalues to the programm via the preferences page (NOTYETREADY)
+        - Add the Hexvalues to the programm via the preferences page (Code 98) (Actuall only the first two values are used)
         actual it need to be inserted in to the code around line 108 in the def printCheck()
    - for serial printers:
-       -not ready, but prepared in the code have a look in def printCheck() line 108
+       - never tested, i don't have a serial printer but perhaps it works like this:
+       - If there is no USB printer the programm looks for a serial one. In the pref page you should write "/dev/tty0" or similair inthe first field.
 4. Network:
     - For multi-minitel installation  create a (wifi) network. Actually the  Programm uses  192.168.0.1-255
-    Server is on 192.168.0.99. If there are Networkproblems change IP adresse in "wishwizard.py" (around line 1384).
+    Server is on 192.168.0.99. If there are Networkproblems cha/dev/usb/lp1nge IP adresse in "wishwizard.py" (around line 1384).
     The clients can be attached via DHCP
 
 5. Special codes: 

@@ -106,20 +106,13 @@ def strformat(left='', right='', fill=' ', width=40):
 #******Print prepa & check******************************
 
 def printCheck():
-    global p, pV
+    global p, pV,sltime
     db_cursor1 = db_conn.cursor() 
     db_cursor1.execute("SELECT * FROM pref")        
     res1 = db_cursor1.fetchall()
     r1= res1[0]
-    x = 0x04b8
-    y = 0x0e1f
-    #x = r1[3]+", "+r1[4]+", "+r1[5]
-    #print(Usb(int(r1[3],0)), int(r1[4],0))))
-    #print(help(Usb(x,y)))
-    
-    print(hex(int(r1[3],16)), hex(int(r1[4],16)), 0)#, 0x81, 0x1) 
-    print( x, y)
-    
+    # check the time before the screen automaticly changes ( Screensaver)
+    sltime = int(r1[2])       
     try:
         p = Usb(int(r1[3],16), int(r1[4],16))   
         pV = True
@@ -129,7 +122,7 @@ def printCheck():
         print("USBPrinter ? ", pV)
     if pV == False:
         try:        
-            p = Serial('/dev/ttyS0',9600,8,1) #oder so,         
+            p = Serial(r1[3],9600,8,1) #oder so,         
             pV = True
             print("Serial Printer ? ", pV)
         except:
@@ -179,14 +172,13 @@ class StateMachine:
         lang = "EN"
         sltime = 120        
         m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
-        print(os.system("stty -F /dev/ttyUSB0 speed 1200"))
-        print(os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0"))
-        print(os.system("stty -F /dev/ttyUSB0 speed 4800"))
+        os.system("stty -F /dev/ttyUSB0 speed 1200")
+        os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0")
+        os.system("stty -F /dev/ttyUSB0 speed 4800")
         os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0") 
         m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 4800, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
-        ####*******Prepare printer
-        
-        print("Printer? ", printCheck())
+        ####*******Prepare prefs :sltime, printer
+        printCheck()
         self.changeState( self.stateLanguage )
        
     def stateWishPic( self, entering  ):
@@ -235,8 +227,8 @@ class StateMachine:
         m.zone(11, 15, 23, str(r[3]), m.blanc)
         m.zone(13, 15, 23, str(r[4]), m.blanc)
         m.zone(15, 15, 23, str(r[5]), m.blanc)
-        m.zone(17, 15, 23, "NO", m.blanc)
         m.zone(19, 15, 23, "NO", m.blanc)
+        m.zone(20, 15, 23, "NO", m.blanc)
         r = res[0]        
         touche = m.repetition
         zone = 1
@@ -262,10 +254,18 @@ class StateMachine:
             m.pos(7)
             m._print(''+ strformat(left="Local / IP"[:11],right="*........................" , width=39))
             m.pos(9)
-            m._print(''+ strformat(left="Time sleep"[:11],right="*........................" , width=39))            
+            m._print(''+ strformat(left="Time sleep"[:11],right="*........................" , width=39))
+            m.pos(11)
+            m._print(''+ strformat(left="Print Val1"[:11],right="*........................" , width=39))
+            m.pos(13)
+            m._print(''+ strformat(left="Print Val2"[:11],right="*........................" , width=39))
+            m.pos(15)
+            m._print(''+ strformat(left="Print Val3"[:11],right="-........................" , width=39))
             m.pos(17)
-            m._print(''+ strformat(left="Reboot"[:11],right="*........................" , width=39))            
+            m._print(''+ strformat(left="Print Val4"[:11],right="-........................" , width=39))
             m.pos(19)
+            m._print(''+ strformat(left="Reboot"[:11],right="*........................" , width=39))            
+            m.pos(20)
             m._print(''+ strformat(left="Shutdown"[:11],right="*........................" , width=39))            
 
 # ligne finale
@@ -321,6 +321,7 @@ class StateMachine:
                 # Execute SQL statement with provided values
                 db_cursor.execute(sql, prefs)
                 db_conn.commit()
+                sltime =int(m.zones[1]['texte'])
                 break
             if touche == 3:
                 break            
@@ -331,17 +332,17 @@ class StateMachine:
         if touche == 1:
             print("check & prepare data ")            
             self.changeState( self.stateWelcome )
-        elif touche == 3 and str(m.zones[2]['texte']) == "YES":
-            m.home()
+        elif touche == 3 and str(m.zones[5]['texte']) == "YES":
+            #m.home()
             m.message(15, 7, 3,"Go to reboot ", bip=True)
-            m.home()
+            #m.home()
             os.system('shutdown now -h')
             
             
-        elif touche == 3 and m.zones[3]['texte'] == "YES":
-            m.home()
+        elif touche == 3 and m.zones[6]['texte'] == "YES":
+            #m.home()
             m.message(15, 7, 3,"Go to shutdown", bip=True)
-            m.home()
+            #m.home()
             os.system('shutdown now -h')
         elif touche == 6:
             self.changeState( self.stateWelcome )

@@ -7,7 +7,8 @@ This is the Link to the FB page, for more Informations and for the user to share
 
 Special thanks to cquest and his Python library: https://github.com/cquest/pynitel and all the informations found at the "Musée du minitel" : https://www.museeminitel.fr/
 
-0. News: V1.35 Printerintegration (to finish) , after wishchoice to pervious list, some dbchanges (need dbupdate on on wishes and prefs)
+0. News: V1.35 Printerintegration (to finish) , after wishchoice to pervious list, some dbchanges (need dbupdate on on wishes and prefs) 
+also changes the connection automaticly from 1200 to 4800 Bauds (works on Minitel1, on t Minitel2 the minitel needs to be switched on and probably changed to 4800 Bauds : Fnct and "P", then "4")
 1. Installation on Linux oder Raspberry
 needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, I use old 10' Laptops (32 or 64 bits) with Raspberry desktop as Server or Mono installation (so no need fo vnc), and raspberrys as clients (even Raspi 2 works well) 
     - mariadb: `sudo apt install mariadb` (auf Raspberrysystem) or `sudo apt install mariadb-server` (auf anderem linux) 

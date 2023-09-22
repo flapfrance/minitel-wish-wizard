@@ -122,7 +122,7 @@ def printCheck():
         print("USBPrinter ? ", pV)
     if pV == False:
         try:        
-            p = Serial(r1[3],9600,8,1) #oder so,         
+            p = Serial(r1[3],9600,8,1) #to complete
             pV = True
             print("Serial Printer ? ", pV)
         except:
@@ -849,7 +849,7 @@ class StateMachine:
                 
             # plusieurs pages ?
                 if len(res) > 9:
-                    m.pos(1, 37)
+                    m.pos(1, 35)
                     m._print(" "+str(int(abs(page)))+'/'+str(int((len(res)+8)/9)))
                     m.pos(3)
 

@@ -871,7 +871,7 @@ class StateMachine:
                             zz= " in prepa."
                         else:
                             zz ="  ---     "
-                        m._print(' '+ strformat(left=z + zz, right=r[1][:24], width=36))
+                        m._print(' '+ strformat(left=z + zz, right=r[1][:23], width=36))
                         m.color(m.vert)
                         m.color(m.bleu)
                         if a < page*9:
@@ -1172,7 +1172,8 @@ class StateMachine:
                 m.plot('*',2)
                 m.pos(x,36)
                 m.plot('*',2)
-                time.sleep(0.2)
+                time.sleep(0.2) # SPECIAL for OLLI's Computer
+                
             m.pos(19,4)    
             m.plot('*',34)
             m.pos(11,6)

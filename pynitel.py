@@ -233,6 +233,7 @@ class Pynitel:
             elif c >= ' ' and len(data) >= longueur:
                 #print("beep")#
                 self.bip()
+                self._del(ligne,colonne + longueur)
                 self.pos(ligne,colonne + longueur)
             elif c >= ' ':
                 data = data + c

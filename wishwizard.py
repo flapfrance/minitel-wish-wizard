@@ -3,7 +3,7 @@
 # V1.35
 # Thanks to Ocean, JS, Montaulab, Claudine, CQuest, Musée du minitel....
 #*************************************************************
-import csv, sqlite3, sys, pynitel, serial, mysql.connector, os, time, subprocess
+import csv, sqlite3, sys, pynitel, serial, mysql.connector, os, time, subprocess#, escpos.printer 
 from escpos.printer import *
 ###
 # Utility functions
@@ -103,7 +103,7 @@ def strformat(left='', right='', fill=' ', width=40):
     print("'"+out+"'", width, total, len(out))
     return(out)
 
-#******Print prepa & check******************************
+#******Screensaver & Print prepa & check******************************
 
 def printCheck():
     global p, pV,sltime
@@ -112,9 +112,11 @@ def printCheck():
     res1 = db_cursor1.fetchall()
     r1= res1[0]
     # check the time before the screen automaticly changes ( Screensaver)
-    sltime = int(r1[2])       
+    sltime = int(r1[2])
+    # Check and prepare Printer (First USB, than serial) (Serial not finished)
     try:
-        p = Usb(int(r1[3],16), int(r1[4],16))   
+        #p = Usb(0x04b8, 0x0e1f)
+        p = Usb(int(r1[4],16), int(r1[5],16))#, r1[6], r1[7])   
         pV = True
         print("USBPrinter ? ", pV)
     except:
@@ -122,7 +124,7 @@ def printCheck():
         print("USBPrinter ? ", pV)
     if pV == False:
         try:        
-            p = Serial(r1[3],9600,8,1) #to complete
+            p = Serial(r1[4],9600,8,1) #to complete
             pV = True
             print("Serial Printer ? ", pV)
         except:
@@ -168,18 +170,30 @@ class StateMachine:
     def stateInit( self, entering  ):
         print("~~~ Initialisation ~~~")        
         print("Minitel init")
-        global m, lang, th1,data,sltime,p, pV
-        lang = "EN"
-        sltime = 120        
-        m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
-        os.system("stty -F /dev/ttyUSB0 speed 1200")
-        os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0")
+        global m, lang, th1,data,sltime,p, pV,db_cursor
+        db_conn.commit()
+        db_cursor.close()
+        db_cursor = db_conn.cursor()             
+        db_cursor.execute("SELECT * FROM pref")        
+        res = db_cursor.fetchall()
+        db_conn.commit()
+        db_cursor.close()
+        
+        r = res[0]
+        lang = r[3]
+        sltime = r[2]
+        print("Language: ", lang, " Screensaver/s: ", sltime)
+        #m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
+        #os.system("stty -F /dev/ttyUSB0 speed 1200")
+        #os.system("echo -en '\x1b\x3a\x6b\x64' > /dev/ttyUSB0")
+        #m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 4800, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
         os.system("stty -F /dev/ttyUSB0 speed 4800")
         os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0") 
         m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 4800, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
+
         ####*******Prepare prefs :sltime, printer
         printCheck()
-        self.changeState( self.stateLanguage )
+        self.changeState( self.stateWishPic )
        
     def stateWishPic( self, entering  ):
         global lang, sltime, ver
@@ -221,14 +235,18 @@ class StateMachine:
         db_cursor = db_conn.cursor()             
         db_cursor.execute("SELECT * FROM pref")        
         res = db_cursor.fetchall()
-        r = res[0]        
+        r = res[0]
+        print( r)
         m.zone(7, 15, 23, r[1], m.blanc)        
         m.zone(9, 15, 23, str(r[2]), m.blanc)
-        m.zone(11, 15, 23, str(r[3]), m.blanc)
-        m.zone(13, 15, 23, str(r[4]), m.blanc)
-        m.zone(15, 15, 23, str(r[5]), m.blanc)
-        m.zone(19, 15, 23, "NO", m.blanc)
+        m.zone(9, 35, 23, str(r[3]), m.blanc)
+        m.zone(11, 15, 23, str(r[4]), m.blanc)
+        m.zone(12, 15, 23, str(r[5]), m.blanc)
+        m.zone(13, 15, 23, str(r[6]), m.blanc)
+        m.zone(14, 15, 23, str(r[7]), m.blanc)
+        m.zone(15, 15, 23, str(r[8]), m.blanc)
         m.zone(20, 15, 23, "NO", m.blanc)
+        m.zone(20, 35, 23, "NO", m.blanc)
         r = res[0]        
         touche = m.repetition
         zone = 1
@@ -252,22 +270,23 @@ class StateMachine:
             m.color(m.bleu)
             m.plot('̶', 40)
             m.pos(7)
-            m._print(''+ strformat(left="Local / IP"[:11],right="*........................" , width=39))
+            m._print(''+ strformat(left="Local / IP"[:11],right="*                        " , width=39))
             m.pos(9)
-            m._print(''+ strformat(left="Time sleep"[:11],right="*........................" , width=39))
+            m._print(''+ strformat(left="Time sleep"[:11],right="*                        " , width=39))
+            strcenter(row = 9,pos=30, txt = "Language ", width = 20, size = 0)
             m.pos(11)
-            m._print(''+ strformat(left="Print Val1"[:11],right="*........................" , width=39))
+            m._print(''+ strformat(left="Print Val1"[:11],right="-                        " , width=39))
+            m.pos(12)
+            m._print(''+ strformat(left="Print Val2"[:11],right="-                        " , width=39))
             m.pos(13)
-            m._print(''+ strformat(left="Print Val2"[:11],right="*........................" , width=39))
+            m._print(''+ strformat(left="Print Val3"[:11],right="-                        " , width=39))
+            m.pos(14)
+            m._print(''+ strformat(left="Print Val4"[:11],right="-                        " , width=39))
             m.pos(15)
-            m._print(''+ strformat(left="Print Val3"[:11],right="-........................" , width=39))
-            m.pos(17)
-            m._print(''+ strformat(left="Print Val4"[:11],right="-........................" , width=39))
-            m.pos(19)
-            m._print(''+ strformat(left="Reboot"[:11],right="*........................" , width=39))            
+            m._print(''+ strformat(left="Print Val5"[:11],right="-                        " , width=39))
             m.pos(20)
-            m._print(''+ strformat(left="Shutdown"[:11],right="*........................" , width=39))            
-
+            m._print(''+ strformat(left="Reboot"[:11],right="*........................" , width=39))                      
+            strcenter(row = 20,pos=30, txt = "Shutdown ", width = 40, size = 0)
 # ligne finale
             m.pos(21)
             m.color(m.bleu)
@@ -314,14 +333,15 @@ class StateMachine:
                 choice = ""
                 if m.zones[0] =="":
                     m.zones[0] = "localhost"
-                prefs = (m.zones[0]['texte'], m.zones[1]['texte'], m.zones[2]['texte'], m.zones[3]['texte'], m.zones[4]['texte'])
+                prefs = (m.zones[0]['texte'], m.zones[1]['texte'], m.zones[2]['texte'], m.zones[3]['texte'], m.zones[4]['texte'], m.zones[5]['texte'], m.zones[6]['texte'], m.zones[7]['texte'])
                 #print(prefs)
                 
-                sql = "UPDATE pref SET id = 1, IP_adr = %s, timer = %s, p_idVend = %s, p_idProd = %s, p_timer = %s  WHERE id = 1"                      
+                sql = "UPDATE pref SET id = 1, IP_adr = %s, timer = %s, lang_code = %s, p_idVend = %s, p_idProd = %s, p_timer = %s, p_3 = %s, p_4 = %s WHERE id = 1"                      
                 # Execute SQL statement with provided values
                 db_cursor.execute(sql, prefs)
                 db_conn.commit()
                 sltime =int(m.zones[1]['texte'])
+                lang = m.zones[2]['texte']
                 break
             if touche == 3:
                 break            
@@ -562,7 +582,7 @@ class StateMachine:
         elif touche == m.envoi:
             if choix1 < 1 or choix1 > 2 or choix1 == 99:                
                 m.home()
-                m.message(15, 7, 3,"Wrong Number, try again ", bip=True)             
+                m.message(15, 7, 1.5,"Wrong Number, try again ", bip=True)             
         elif touche == m.sommaire and choix1 == "sleep":
             print("sommaire to sleep")
             self.changeState( self.stateWishPic ) #***new ?????
@@ -803,7 +823,7 @@ class StateMachine:
         m.clear
         m.home()
         #m.message(10, 10, 5,transl("p4t1")+ str(db_num) +transl("p4t2"), bip=False)
-        m.message(10, 10, 5,transl("p4t1") + transl("p4t2"), bip=False)
+        m.message(10, 10, 2,transl("p4t1") + transl("p4t2"), bip = False)
         self.changeState( self.stateWelcome )
 
     def stateWishread0( self, entering ):
@@ -1269,7 +1289,7 @@ class StateMachine:
                 p.text("More informations or \n")
                 p.text("share your experience\n")
                 p.text("check the QR code!\n")
-                p.qr('WISH WIZARD;https://www.facebook.com/100094642188364',0,5,2)
+                p.qr('WISH WIZARD PROJECT \n https://www.facebook.com/100094642188364',0,5,2)
                 #p.set(font='b', height=2, width=2, align='center', text_type='bold')
                 p.text("_________________________")                
                 p.cut()
@@ -1530,12 +1550,15 @@ def main():
                 id INT PRIMARY KEY,
                 IP_adr VARCHAR(50),
                 timer INT,
+                lang_code VARCHAR(2),
                 p_idVend VARCHAR(6),
                 p_idProd VARCHAR(6),
-                p_timer VARCHAR(1)
+                p_timer VARCHAR(10),
+                p_3 VARCHAR(10),
+                p_4 VARCHAR(10)
             )
         """)
-        db_cursor.execute("INSERT INTO pref (id, IP_adr, timer, p_idVend, p_idProd, p_timer  ) VALUES (1, 'localhost', 30,'','','')")
+        db_cursor.execute("INSERT INTO pref (id, IP_adr, timer, lang_code, p_idVend, p_idProd, p_timer, p_3, p_4 ) VALUES (1, 'localhost', 30,'FR','','','','','')")
         # Transaktion bestätigen
         db_conn.commit()
         print("Tabelle erstellt und Daten eingefügt.")

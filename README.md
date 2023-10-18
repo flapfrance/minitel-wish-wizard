@@ -17,6 +17,8 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
         - perhaps python-is-python3: `sudo apt install python-is-python3`
      - with 'pip' 
         - and mysql.connector: `pip install mysql.connector`
+    - Add user (your user name) to dialout group 'sudo usermod -a -G dialout $USER' and restart.
+If  not working try also 'sudo usermod -a -G tty $USER' & restart
 
 2. Programm needs from mariadb the database 'minitel':
     - Acces with: `sudo mariadb`

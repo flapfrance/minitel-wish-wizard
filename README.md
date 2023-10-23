@@ -30,7 +30,7 @@ If  not working try also `sudo usermod -a -G tty $USER` & restart
         - To delete (drop) table : (for maintenance or reset)
         - `sudo mariadb`
         - `USE minitel;`
-        - `DROP TABLE wishes;`
+        - `DROP TABLE wishes;` or `DROP TABLE pref;`(Table pref will be replaced by settings.ini in next Version)
 
 3. Start via:
     - By CLI:

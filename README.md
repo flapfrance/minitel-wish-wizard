@@ -11,7 +11,8 @@ Special thanks to cquest and his Python library: https://github.com/cquest/pynit
 also changes the connection automaticly from 1200 to 4800 Bauds (works on Minitel1, on t Minitel2 the minitel needs to be switched on and probably changed to 4800 Bauds : Fnct and "P", then "4", not tested yet)
 1. Installation on Linux oder Raspberry
 needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, I use old 10' Laptops (32 or 64 bits) with Raspberry desktop as Server or Mono installation (so no need fo vnc), and raspberrys as clients (even Raspi 2 works well) 
-    - mariadb: ~~`sudo apt install mariadb` (auf Raspberrysystem) or~~ `sudo apt install mariadb-server` (auf anderem linux) 
+    - mariadb: ~~`sudo apt install mariadb` (auf Raspberrysystem) or~~ `sudo apt install mariadb-server`
+       -  To open acces over network change bind-address = 127.0.0.1 to 0.0.0.0 in sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf 
     - libmariadb-dev: `sudo apt install libmariadb-dev` 
     - python (should be there, higer than  3.0)
         - perhaps python-is-python3: `sudo apt install python-is-python3`

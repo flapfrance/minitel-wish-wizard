@@ -8,7 +8,7 @@ This is the Link to the FB page, for more Informations and for the WISH WIZARD U
 Special thanks to cquest and his Python library: https://github.com/cquest/pynitel and all the informations found at the "Musée du minitel" : https://www.museeminitel.fr/
 
 0. News: V1.35 Printerintegration (to finish) , after wishchoice to pervious list, some dbchanges (need dbupdate on on wishes and prefs) 
-also changes the connection automaticly from 1200 to 4800 Bauds (works on Minitel1, on Minitel2 the minitel needs to be san
+also changes the connection automaticly from 1200 to 4800 Bauds (works on Minitel1, on Minitel2  it need to be checked) There are some old Minitels1 without the FNCT key, they only can run with 1200 Bauds. You can set this in the settings.ini.
 needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, I use old 10' Laptops (32 or 64 bits) with Raspberry desktop as Server or Mono installation (so no need fo vnc), and raspberrys as clients (even Raspi 2 works well) 
     - mariadb: ~~`sudo apt install mariadb` (auf Raspberrysystem) or~~ `sudo apt install mariadb-server`
        -  To open acces over network change `bind-address = 127.0.0.1` to `0.0.0.0` in `sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf` 

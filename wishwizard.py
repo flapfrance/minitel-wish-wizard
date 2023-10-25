@@ -106,7 +106,7 @@ def strformat(left='', right='', fill=' ', width=40):
         out = left + fill * total + right
     else:
         out = left+right
-    print("'"+out+"'", width, total, len(out))
+    #print("'"+out+"'", width, total, len(out))
     return(out)
 
 #******Screensaver & Print prepa & check******************************
@@ -210,7 +210,7 @@ class StateMachine:
     def stateWishPic( self, entering  ):
         global lang, sltime, ver
         
-        print("Wish wizard picture")
+        print("-> State WW picture")
         m.home()
         m.load(1,'./WM/WishWizard.vdt')
         m.draw(1)
@@ -410,7 +410,7 @@ class StateMachine:
             print("stay in stream")        
         
     def stateLanguage(self, entering): #p0t1
-        print("State Welcome")
+        print("-> State Language")
         global lang, th1, sltime, ver
         m._del(0,0)        
         while True:# t2 > time.time():#True:
@@ -516,7 +516,7 @@ class StateMachine:
             self.changeState( self.stateInfo1 ) 
         
     def stateWelcome(self, entering):
-        print("State Welcome")
+        print("-> State Welcome")
         global lang, sltime
         m.clear
         m.home()        
@@ -600,9 +600,9 @@ class StateMachine:
                 break
             elif touche == m.correction:  # retour saisie pour correction
                 return(touche)
-            elif touche != m.repetition:
-                m.bip()  
-        print("Bin hier")          
+            #lif touche != m.repetition:
+                #m.bip()  
+                  
         if touche == m.envoi and choix1 == 1 :          
             self.changeState( self.stateEnterwish )                       
         elif touche == m.envoi and choix1 == 2 :
@@ -616,11 +616,10 @@ class StateMachine:
                 m.home()
                 m.message(15, 7, 1.5,"Wrong Number, try again ", bip=True)             
         elif touche == m.sommaire and choix1 == "sleep":
-            print("sommaire to sleep")
+            
             self.changeState( self.stateWishPic ) #***new ?????
             #return
-        elif touche == m.sommaire and choix1 == 0:
-            print("sommaire to Language")
+        elif touche == m.sommaire and choix1 == 0:            
             self.changeState( self.stateLanguage )
         if touche == m.guide:
             self.changeState( self.stateInfo1 ) 
@@ -712,7 +711,7 @@ class StateMachine:
     def stateEnterwish( self, entering  ):
         
         global m,wish1, wish2, lang,sltime
-        print("State Enterwish")
+        print("-> State Enterwish")
         m.resetzones()
         m.clear
         t = ["'Title'", "'Description'","","", "'Your name'", "'Adult wish y/n'", "'How to find you'"]        
@@ -829,8 +828,7 @@ class StateMachine:
             self.changeState( self.stateWishsaved )
         elif touche == 6:
             self.changeState( self.stateWelcome )
-        else:
-            print("stay in stream")
+       
             
     def stateWishsaved( self, entering ):
                 
@@ -854,8 +852,9 @@ class StateMachine:
         
         m.clear
         m.home()
+        db_cursor.close()
         #m.message(10, 10, 5,transl("p4t1")+ str(db_num) +transl("p4t2"), bip=False)
-        m.message(10, 10, 2,transl("p4t1") + transl("p4t2"), bip = False)
+        m.message(10, 10, 3,transl("p4t1") + transl("p4t2"), bip = False)
         self.changeState( self.stateWelcome )
 
     def stateWishread0( self, entering ):
@@ -864,7 +863,7 @@ class StateMachine:
         self.changeState( self.stateWishread1)
     def stateWishread1( self, entering  ):
         
-        print("State read wish titel")
+        print("-> State WishRead1 (titel)")
         global  m, choix, choix_lfd, lang, sltime, db_conn ,db_cursor, page
         choix = 0
         touche = 0
@@ -875,7 +874,7 @@ class StateMachine:
         db_cursor.execute(query)        
         db_result = db_cursor.fetchone()            
         db_num = int(db_result[0])
-        print(db_num)            
+        #print(db_num) #Number of entrys in db           
         db_cursor.execute("SELECT * FROM wishes ORDER BY lfd DESC")        
         res = db_cursor.fetchall()
         #"Affiche les résultats de la recherche"
@@ -909,12 +908,12 @@ class StateMachine:
                 m.pos(3)
                 for a in range((page-1)*9, page*9, ):
                 #for a in range( page*9,(page-1)*9, -1): # neu rückwärts
-                    print("Anzeige page:",(page-1)*9, "  ",page*9)
+                    #print("Anzeige page:",(page-1)*9, "  ",page*9)
                     if a < len(res):
                         r = res[a]                        
                         m.color(m.blanc)
                         m._print(strformat(right=str(int(a+1)), width=3))
-                        print("Datensatz: " + str(a) + " Inhalt Adulte: " + str(r[6]))
+                        #print("Datensatz: " + str(a) + " Inhalt Adulte: " + str(r[6]))
                         if str(r[6]) == "Y":
                             z= "18+"
                         else:
@@ -1039,7 +1038,7 @@ class StateMachine:
             elif touche != m.repetition:
                 m.bip()
                 page = -page  # pas de ré-affichage        
-        print("auswahl Wish choix: " + str(choix) + " & Touche " + str(touche))
+        #print("auswahl Wish choix: " + str(choix) + " & Touche " + str(touche))
         if touche == m.guide:
             self.changeState( self.stateInfo1 )
         if touche == m.sommaire:
@@ -1050,12 +1049,12 @@ class StateMachine:
                 m.home()
                 m.message(10, 7, 3," This wish doesn't exist "+ str(db_num), bip=True)
                 return()
-            print("CHoix > 0")
+            #print("CHoix > 0")
             # adult check
             r = res[choix-1]
-            print(r)
+            #print(r)
             if r[6] == "Y" or r[6] == "y":
-                print("Adult content" , sltime)
+                #print("Adult content" , sltime)
                 a = adultcheck(sltime)
                 if a =="A":
                     self.changeState( self.stateWishread2 )
@@ -1064,11 +1063,11 @@ class StateMachine:
                     m.message(10, 7, 3,transl("p5t9"), bip=True)
                     return()
                 
-            else:
-                print("Kids content")
+            #else:
+                #print("Kids content")
             self.changeState( self.stateWishread2 )
         elif touche == m.envoi and choix < 0:
-            print("CHoix <= 0")
+            #print("CHoix <= 0")
             self.changeState( self.stateWelcome )
         if db_num == 0:
             self.changeState( self.stateWelcome )
@@ -1076,7 +1075,7 @@ class StateMachine:
             
     def stateWishread2( self, entering  ):
         
-        print("State read wish details")
+        print("-> State Wishread2 (details)")
         global db_cursor, choix,  choix_lfd, lang, sltime        
         db_conn.commit()
         db_cursor.close() #Close DB
@@ -1166,7 +1165,7 @@ class StateMachine:
                 return(touche)
             elif touche != m.repetition:
                 m.bip()
-        print("auswahl Wish: " + str(choix1))
+        #print("auswahl Wish: " + str(choix1))
         if touche == m.envoi:
             if choix1 == "OUI JE VEUX"  or choix1 == "YES I WILL"  or choix1 == "JA ICH WILL"  or choix1 == "YO LES":
 ####
@@ -1179,16 +1178,12 @@ class StateMachine:
                 # Execute SQL statement with provided values
                 db_cursor.execute(sql, (new_value, record_id))
                 db_conn.commit()
-
-#####
-
-                
-                print("Ok and go on")                
+                #print("Ok and go on")                
                 
                 m.canblock(11,24,1,True)
                 self.changeState( self.stateWishtake )
             elif choix1 != "OUI JE VEUX"  or choix1 == "YES I WILL"  or choix1 == "JA ICH WILL"  or choix1 == "YO LES":
-                print("Bad choice so, back")
+                #print("Bad choice so, back")
                 m.canblock(11,19,1,False)
                 
                 m.message(15, 7, 5,transl("p7t12"), bip=True)
@@ -1202,11 +1197,10 @@ class StateMachine:
         global choix, db_cursor,choix_lfd, lang, sltime, p, pV
         db_conn.commit()
         db_cursor.close() #Close DB
-        db_cursor = db_conn.cursor() #Open db 
-        
+        db_cursor = db_conn.cursor() #Open db         
         db_cursor.execute("SELECT * FROM wishes WHERE lfd="+str(choix_lfd))
         res1 = db_cursor.fetchall()
-        print("State Take wish details")
+        print("-> State Wishtake")
         r = res1[0]
         while True:
            # m.pos(10,4)    
@@ -1250,7 +1244,7 @@ class StateMachine:
             m._print("RETOUR")
             m.pos(21, 19)
             m.cursor(False)
-            pV = printCheck()
+            pV = printCheck() #**** check if printer is reachable
             if pV == True:
                 m._print("PRINT Y/N ")
                 m.pos(21, 31)

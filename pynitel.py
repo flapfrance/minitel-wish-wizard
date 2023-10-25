@@ -205,7 +205,7 @@ class Pynitel:
                 continue
             elif c == '\x13':  # SEP donc touche Minitel...
                 c = self.conn.read(1).decode()
-                print("Inputvalue: " ,ord(c) ," Data: " , data)
+                #print("Inputvalue: " ,ord(c) ," Data: " , data)
 
                 if c == '\x45' and data != '':  # annulation
                     data = ''

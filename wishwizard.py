@@ -1,9 +1,9 @@
 #/usr/bin/python3
 # -*- coding: utf-8 -*-
-# V1.35
+# V1.4 database prefs replaced by settings.ini file
 # Thanks to Ocean, JS, Montaulab, Claudine, CQuest, Musée du minitel....
 #*************************************************************
-import csv, sqlite3, sys, pynitel, serial, mysql.connector, os, time, subprocess#, escpos.printer 
+import csv, sqlite3, sys, pynitel, serial, mysql.connector, os, time, subprocess, configparser, ipaddress, socket#, escpos.printer 
 from escpos.printer import *
 ###
 # Utility functions
@@ -24,6 +24,12 @@ def create_data(csv_dateipfad):
                 spalten_werte[spaltenueberschrift] = wert            
             data[beschreibung] = spalten_werte    
     return data
+#************Find actual IP in network
+def getNetworkIp():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    s.connect(('<broadcast>', 0))
+    return s.getsockname()[0]
 
 #**************Read text from csv file "data" and use choosen language
 def transl(beschreibung):
@@ -107,16 +113,20 @@ def strformat(left='', right='', fill=' ', width=40):
 
 def printCheck():
     global p, pV,sltime
-    db_cursor1 = db_conn.cursor() 
-    db_cursor1.execute("SELECT * FROM pref")        
-    res1 = db_cursor1.fetchall()
-    r1= res1[0]
+    config = configparser.ConfigParser()    
+    config.read('settings.ini')
+    
     # check the time before the screen automaticly changes ( Screensaver)
-    sltime = int(r1[2])
+    sltime = int(config['prefs']['timer'])
+    
+    #lang = config['prefs']['lang_code']  *****************************************???????????????? oder anders????
+    
+    
     # Check and prepare Printer (First USB, than serial) (Serial not finished)
     try:
         #p = Usb(0x04b8, 0x0e1f)
-        p = Usb(int(r1[4],16), int(r1[5],16))#, r1[6], r1[7])   
+        p = Usb(int(config['printer']['p_idvend'],16), int(config['printer']['p_idprod'],16))#, r1[6], r1[7])
+        #p = Usb(int(r1[4],16), int(r1[5],16))#, r1[6], r1[7])   
         pV = True
         print("USBPrinter ? ", pV)
     except:
@@ -124,7 +134,7 @@ def printCheck():
         print("USBPrinter ? ", pV)
     if pV == False:
         try:        
-            p = Serial(r1[4],9600,8,1) #to complete
+            p = Serial(config['printer']['p_idvend'],9600,8,1) #to complete
             pV = True
             print("Serial Printer ? ", pV)
         except:
@@ -170,29 +180,31 @@ class StateMachine:
     def stateInit( self, entering  ):
         print("~~~ Initialisation ~~~")        
         print("Minitel init")
-        global m, lang, th1,data,sltime,p, pV,db_cursor
-        db_conn.commit()
-        db_cursor.close()
-        db_cursor = db_conn.cursor()             
-        db_cursor.execute("SELECT * FROM pref")        
-        res = db_cursor.fetchall()
-        db_conn.commit()
-        db_cursor.close()
-        
-        r = res[0]
-        lang = r[3]
-        sltime = r[2]
+        global m, lang, th1,data,sltime,p, pV,db_cursor        
+       
+        print( "Officielle IP: ", getNetworkIp())
+        config = configparser.ConfigParser()
+        config.read('settings.ini')                
+        sltime =config['prefs']['timer']
+        lang = config['prefs']['lang_code']        
+        speed = int(config['prefs']['speed'])
         print("Language: ", lang, " Screensaver/s: ", sltime)
-        #m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
-        #os.system("stty -F /dev/ttyUSB0 speed 1200")
-        #os.system("echo -en '\x1b\x3a\x6b\x64' > /dev/ttyUSB0")
-        #m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 4800, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
-        os.system("stty -F /dev/ttyUSB0 speed 4800")
-        os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0") 
-        m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 4800, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
-
+        m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 1200, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
+        #os.system("echo -en '\x1b\x3a\x6b\x64' > /dev/ttyUSB0")        
+        os.system("stty -F /dev/ttyUSB0 speed 1200")
+        if speed == 4800:
+            os.system("echo -en '\x1b\x3a\x6b\x76' > /dev/ttyUSB0")
+            m.end()      
+            os.system("stty -F /dev/ttyUSB0 speed 4800")
+            m = pynitel.Pynitel(serial.Serial('/dev/ttyUSB0', 4800, parity=serial.PARITY_EVEN, bytesize=7, timeout=2))
+            print("Baudrate: ", speed)
+        else:# speed == 1200:            
+            print("Baudrate: ", speed)
+            
         ####*******Prepare prefs :sltime, printer
         printCheck()
+
+        print("~~~ Initialisation Done ~~~", "\n")
         self.changeState( self.stateWishPic )
        
     def stateWishPic( self, entering  ):
@@ -227,27 +239,26 @@ class StateMachine:
             
     def statePrefs(self, entering): # Prefs: timer screensave, perhaps, Printer 
         print("State Preferences")
-        global m,wish1, wish2, lang,sltime, db_cursor     
+        global m,wish1, wish2, lang,sltime, db_cursor ,db_conn    
+
+        db_cursor.close() #Close DB
+        db_cursor = db_conn.cursor() #Open db
         m.resetzones()
-        m.clear        
-        db_conn.commit()
-        db_cursor.close()
-        db_cursor = db_conn.cursor()             
-        db_cursor.execute("SELECT * FROM pref")        
-        res = db_cursor.fetchall()
-        r = res[0]
-        print( r)
-        m.zone(7, 15, 23, r[1], m.blanc)        
-        m.zone(9, 15, 23, str(r[2]), m.blanc)
-        m.zone(9, 35, 23, str(r[3]), m.blanc)
-        m.zone(11, 15, 23, str(r[4]), m.blanc)
-        m.zone(12, 15, 23, str(r[5]), m.blanc)
-        m.zone(13, 15, 23, str(r[6]), m.blanc)
-        m.zone(14, 15, 23, str(r[7]), m.blanc)
-        m.zone(15, 15, 23, str(r[8]), m.blanc)
+        m.clear             
+        config = configparser.ConfigParser()
+        config.read('settings.ini')
+        m.zone(7, 15, 23, config['prefs']['ip_adr'], m.blanc)
+        m.zone(7, 35, 23, config['prefs']['speed'], m.blanc)
+        m.zone(9, 15, 23, config['prefs']['timer'], m.blanc)
+        m.zone(9, 35, 23, config['prefs']['lang_code'], m.blanc)
+        m.zone(11, 15, 23, config['printer']['p_idvend'], m.blanc)
+        m.zone(12, 15, 23, config['printer']['p_idprod'], m.blanc)
+        m.zone(13, 15, 23, config['printer']['p_timer'], m.blanc)
+        m.zone(14, 15, 23, config['printer']['p_3'], m.blanc)
+        m.zone(15, 15, 23, config['printer']['p_4'], m.blanc)
         m.zone(20, 15, 23, "NO", m.blanc)
         m.zone(20, 35, 23, "NO", m.blanc)
-        r = res[0]        
+        #r = res[0]        
         touche = m.repetition
         zone = 1
         m.home()
@@ -271,6 +282,8 @@ class StateMachine:
             m.plot('̶', 40)
             m.pos(7)
             m._print(''+ strformat(left="Local / IP"[:11],right="*                        " , width=39))
+            strcenter(row = 7,pos=30, txt = "Bauds ", width = 20, size = 0)
+
             m.pos(9)
             m._print(''+ strformat(left="Time sleep"[:11],right="*                        " , width=39))
             strcenter(row = 9,pos=30, txt = "Language ", width = 20, size = 0)
@@ -332,16 +345,42 @@ class StateMachine:
                 print("Touche ENVOI: " + str(touche))
                 choice = ""
                 if m.zones[0] =="":
-                    m.zones[0] = "localhost"
-                prefs = (m.zones[0]['texte'], m.zones[1]['texte'], m.zones[2]['texte'], m.zones[3]['texte'], m.zones[4]['texte'], m.zones[5]['texte'], m.zones[6]['texte'], m.zones[7]['texte'])
-                #print(prefs)
-                
-                sql = "UPDATE pref SET id = 1, IP_adr = %s, timer = %s, lang_code = %s, p_idVend = %s, p_idProd = %s, p_timer = %s, p_3 = %s, p_4 = %s WHERE id = 1"                      
-                # Execute SQL statement with provided values
-                db_cursor.execute(sql, prefs)
-                db_conn.commit()
-                sltime =int(m.zones[1]['texte'])
-                lang = m.zones[2]['texte']
+                    m.zones[0] = "localhost"               
+
+                config['prefs'] = {
+                    'IP_adr': m.zones[0]['texte'],
+                    'speed': m.zones[1]['texte'],
+                    'timer': m.zones[2]['texte'],
+                    'lang_code': m.zones[3]['texte']}
+                config['printer'] = {
+                    'p_idvend': m.zones[4]['texte'],
+                    'p_idprod': m.zones[5]['texte'],
+                    'p_timer': m.zones[6]['texte'],
+                    'p_3': m.zones[7]['texte'],
+                    'p_4': m.zones[8]['texte']}
+                with open('settings.ini', 'w') as configfile:
+                    config.write(configfile)
+
+        
+                sltime =int(m.zones[2]['texte'])
+                lang = m.zones[3]['texte']
+                try:
+                    db_conn = mysql.connector.connect(
+                        host = config['prefs']['ip_adr'],#ipaddress.IPv4Address(config['prefs']['ip_adr']),
+                        user = 'utilisateur1',
+                        password = '',
+                        database = 'minitel'
+                        )
+                    print("Connected to " , config['prefs']['ip_adr'])
+                except:
+                    db_conn = mysql.connector.connect(
+                        host = 'localhost',
+                        user = 'utilisateur1',
+                        password = '',
+                        database = 'minitel'
+                        )
+                    print("Connected to Local ")
+                db_cursor = db_conn.cursor()
                 break
             if touche == 3:
                 break            
@@ -444,12 +483,7 @@ class StateMachine:
                 break
             elif touche == m.correction:  # retour saisie pour correction
                 return(touche)
-            #elif touche != m.repetition:
-                #print("Beep")#m.bip()         
 
-        print("Bin hier")               
-        #if t2 < time.time():
-            #m.message(15, 7, 5,"timer passed", bip=True)
         if choix1 == "":
             choix1 = lang
         if touche == m.sommaire and choix1 == "sleep":
@@ -570,9 +604,7 @@ class StateMachine:
                 m.bip()  
         print("Bin hier")          
         if touche == m.envoi and choix1 == 1 :          
-            self.changeState( self.stateEnterwish )
-        #elif  touche == m.chariot:
-            #print("!!!Last key: " + str(m.key()))                
+            self.changeState( self.stateEnterwish )                       
         elif touche == m.envoi and choix1 == 2 :
             self.changeState( self.stateWishread0 )
         elif touche == m.envoi and choix1 == 99 :
@@ -1119,13 +1151,7 @@ class StateMachine:
             else:
                 page = abs(page)
         # attente saisie
-            (choix1, touche) = m.input(23, 1, 11, sltime)
-            #****** check for integer NO NEED HERE
-            #if not isinstance(choix1,int):
-                #if not choix1.isdigit():
-                    #choix1 = 0
-                #choix1 = int(choix1)
-                #m.clear            
+            (choix1, touche) = m.input(23, 1, 11, sltime)                       
             m.cursor(False)
             if touche == m.suite:
                 m.bip()
@@ -1145,7 +1171,6 @@ class StateMachine:
             if choix1 == "OUI JE VEUX"  or choix1 == "YES I WILL"  or choix1 == "JA ICH WILL"  or choix1 == "YO LES":
 ####
                 #**** write decision in fullfilled = Y update
-                #sql = "INSERT INTO wishes (lfd,titel,descr1,descr2,descr3,name,rated,find,fullfilled) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"        
 
                 sql = "UPDATE wishes SET fullfilled = %s WHERE lfd= %s "
                 new_value = "Y"
@@ -1186,7 +1211,7 @@ class StateMachine:
         while True:
            # m.pos(10,4)    
            # m.plot('*', 34)
-           # added time.sleep to fix a display problem
+           # added time.sleep to fix a display problem****************************** Ollis FIX
             for x in range(9,19):
                 m.pos(x,4)
                 m.plot('*',2)
@@ -1496,34 +1521,71 @@ def main():
     global db_conn, db_cursor, data, ver
 
     # Define Version
-    ver = "1.35"
-    print( "WISH WIZARD " , ver)
+    ver = "1.4"
+    print( "WISH WIZARD " , ver, "\n")
     # create state machine object
     stateMachine=StateMachine()
+    
+    # Create settings.ini if not exist
+    ini_exists = os.path.isfile("settings.ini")
+    #print("INI file exist? ", ini_exists)
+    if not ini_exists:
+        config = configparser.ConfigParser()
+        config['prefs'] = {
+            'IP_adr': '127.0.0.1',
+            'speed': '1200',
+            'timer': '120',
+            'lang_code': 'FR'
+            }
+        config['printer'] = {
+            'p_idvend': '0',
+            'p_idprod': '0',
+            'p_timer': '',
+            'p_3': '',
+            'p_4': ''}
+        with open('settings.ini', 'w') as configfile:
+            config.write(configfile)
+        print("Ini file created")
+    config = configparser.ConfigParser()
+    config.read('settings.ini')
+
+    
     
     # Prepare dataobject with all Screen txts in diff languages
     csv_dateipfad = 'WM/lang.csv'
     data = create_data(csv_dateipfad) # to function
     
-    # Prepare db and create if not exist from mariadb
-    # and decision if local or client on 
-    try:
+    #**********NETWORKCHECK***************
+    interface = ipaddress.IPv4Interface(str(getNetworkIp()+ "/24"))    
+    print('Networkkrams: \n Range: ', interface.network, '\n IP loc: ',getNetworkIp(),'\n IP Data: ' ,config['prefs']['ip_adr'] )
+    an_address = ipaddress.ip_address(config['prefs']['ip_adr'])
+    a_network = ipaddress.ip_network(str(interface.network))    
+    #address_in_network = an_address in a_network
+    if an_address in a_network:        
+        try:
+            db_conn = mysql.connector.connect(
+                host = str(config['prefs']['ip_adr']),#ipaddress.IPv4Address(config['prefs']['ip_adr']),
+                user = 'utilisateur1',
+                password = '',
+                database = 'minitel'
+                )
+            print("Connected to " , config['prefs']['ip_adr'])
+        except:
+            db_conn = mysql.connector.connect(
+                host = 'localhost',
+                user = 'utilisateur1',
+                password = '',
+                database = 'minitel'
+                )
+            print(' No Database @ ',config['prefs']['ip_adr'], ' , connected to Local ')
+    else:
         db_conn = mysql.connector.connect(
-            host = '192.168.1.99',
-            user = 'utilisateur1',
-            password = '',
-            database = 'minitel'
-            )
-        print("Connected to .99")
-    except:
-        db_conn = mysql.connector.connect(
-            host = 'localhost',
-            user = 'utilisateur1',
-            password = '',
-            database = 'minitel'
-            )
-        print("Connected to Local ")
-    
+                host = 'localhost',
+                user = 'utilisateur1',
+                password = '',
+                database = 'minitel'
+                )
+        print("Wrong IP Range, Connected to Local ")
         
     db_cursor = db_conn.cursor()    
     sql_anweisung1 = """
@@ -1539,35 +1601,10 @@ def main():
         fullfilled VARCHAR(1)
         );"""
     db_cursor.execute(sql_anweisung1)
-    # Überprüfen, ob die Tabelle existiert for preferences
-    db_cursor.execute("SHOW TABLES LIKE 'pref'")
-    table_exists = db_cursor.fetchone()
-    #Usb(0x04b8, 0x0e1f, 0, 0x81, 0x1)
-    # Wenn die Tabelle noch nicht existiert, Tabelle erstellen und Daten einfügen
-    if not table_exists:
-        db_cursor.execute("""
-            CREATE TABLE pref (
-                id INT PRIMARY KEY,
-                IP_adr VARCHAR(50),
-                timer INT,
-                lang_code VARCHAR(2),
-                p_idVend VARCHAR(6),
-                p_idProd VARCHAR(6),
-                p_timer VARCHAR(10),
-                p_3 VARCHAR(10),
-                p_4 VARCHAR(10)
-            )
-        """)
-        db_cursor.execute("INSERT INTO pref (id, IP_adr, timer, lang_code, p_idVend, p_idProd, p_timer, p_3, p_4 ) VALUES (1, 'localhost', 30,'FR','','','','','')")
-        # Transaktion bestätigen
-        db_conn.commit()
-        print("Tabelle erstellt und Daten eingefügt.")
-    else:
-        print("Tabelle existiert bereits.")
-
+    
     # Verbindung schließen
-    db_cursor.close()                      
-
+    db_cursor.close()
+    
     # Prepa divers
     global m
     if len(sys.argv) > 2:
@@ -1575,7 +1612,7 @@ def main():
     else:
         (choice, ou) = ('', '')
     
-    print( "Bis hier erstmal" )
+    print( " " )
     ###
     # Main loop
     ###

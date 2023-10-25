@@ -12,8 +12,8 @@ also changes the connection automaticly from 1200 to 4800 Bauds (works on Minite
 1. Installation on Linux oder Raspberry
 needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, I use old 10' Laptops (32 or 64 bits) with Raspberry desktop as Server or Mono installation (so no need fo vnc), and raspberrys as clients (even Raspi 2 works well) 
     - mariadb: ~~`sudo apt install mariadb` (auf Raspberrysystem) or~~ `sudo apt install mariadb-server`
-       -  To open acces over network change bind-address = 127.0.0.1 to 0.0.0.0 in sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf 
-    - libmariadb-dev: `sudo apt install libmariadb-dev` 
+       -  To open acces over network change `bind-address = 127.0.0.1` to `0.0.0.0` in `sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf` 
+    - libmariadb-dev: `sudo apt install libmariadb-dev
     - python (should be there, higer than  3.0)
         - perhaps python-is-python3: `sudo apt install python-is-python3`
      - with 'pip' 
@@ -58,13 +58,11 @@ If  not working try also `sudo usermod -a -G tty $USER` & restart
        - never tested, i don't have a serial printer but perhaps it works like this:
        - If there is no USB printer the programm looks for a serial one. In the pref page you should write "/dev/tty0" or similair inthe first field.
 4. Network:
-    - For multi-minitel installation  create a (wifi) network. Actually the  Programm uses  192.168.0.1-255
-    Server is on 192.168.0.99. If there are Networkproblems change IP adresse in "wishwizard.py" (around line 1384).
-    The clients can be attached via DHCP
+    - For multi-minitel installation  create a (wifi) network. Add the IP adresse of the serverwith the database to use in the preferences (98 on page choices) or directly in settings.ini.
+    
 
 5. Special codes: 
     - On pages Choices (1 or 2) :
         - 99 to open delete whishes page
-        - 98 preferences (Timer for Screensaver, and Hexcodes for USBprinters works well , the rest is wip)
-6. Possible changes in the code:
-    - Language at start: (around Line 145 ) lang = "DE" (or FR, EN, or ES)
+        - 98 preferences ( IP adresse for the server database,Timer for Screensaver, and Hexcodes for USBprinters works well , the rest is wip)
+            - use this page to change preferences, some changes may need a restart. To reset preferences, delete the settings.ini. 

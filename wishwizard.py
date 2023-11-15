@@ -115,7 +115,11 @@ def printCheck():
     global p, pV,sltime
     config = configparser.ConfigParser()    
     config.read('settings.ini')
-    
+
+    # check if printer is enabled
+    if int(config['printer']['p_enabled']) == 0:
+        return False
+
     # check the time before the screen automaticly changes ( Screensaver)
     sltime = int(config['prefs']['timer'])
     
@@ -1532,6 +1536,7 @@ def main():
             'lang_code': 'FR'
             }
         config['printer'] = {
+            'p_enabled': '0',
             'p_idvend': '0',
             'p_idprod': '0',
             'p_timer': '',

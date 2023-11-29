@@ -255,11 +255,12 @@ class StateMachine:
         m.zone(7, 35, 23, config['prefs']['speed'], m.blanc)
         m.zone(9, 15, 23, config['prefs']['timer'], m.blanc)
         m.zone(9, 35, 23, config['prefs']['lang_code'], m.blanc)
-        m.zone(11, 15, 23, config['printer']['p_idvend'], m.blanc)
-        m.zone(12, 15, 23, config['printer']['p_idprod'], m.blanc)
-        m.zone(13, 15, 23, config['printer']['p_timer'], m.blanc)
-        m.zone(14, 15, 23, config['printer']['p_3'], m.blanc)
-        m.zone(15, 15, 23, config['printer']['p_4'], m.blanc)
+        m.zone(11, 15, 1, config['printer']['p_enabled'], m.blanc)
+        m.zone(12, 15, 23, config['printer']['p_idvend'], m.blanc)
+        m.zone(13, 15, 23, config['printer']['p_idprod'], m.blanc)
+        m.zone(14, 15, 23, config['printer']['p_timer'], m.blanc)
+        m.zone(15, 15, 23, config['printer']['p_3'], m.blanc)
+        m.zone(16, 15, 23, config['printer']['p_4'], m.blanc)
         m.zone(20, 15, 23, "NO", m.blanc)
         m.zone(20, 35, 23, "NO", m.blanc)
         #r = res[0]        
@@ -292,7 +293,7 @@ class StateMachine:
             m._print(''+ strformat(left="Time sleep"[:11],right="*                        " , width=39))
             strcenter(row = 9,pos=30, txt = "Language ", width = 20, size = 0)
             m.pos(11)
-            m._print(''+ strformat(left="Print Val1"[:11],right="-                        " , width=39))
+            m._print(''+ strformat(left="Print y=1/n=0"[:11],right="-                        " , width=39))
             m.pos(12)
             m._print(''+ strformat(left="Print Val2"[:11],right="-                        " , width=39))
             m.pos(13)
@@ -301,6 +302,9 @@ class StateMachine:
             m._print(''+ strformat(left="Print Val4"[:11],right="-                        " , width=39))
             m.pos(15)
             m._print(''+ strformat(left="Print Val5"[:11],right="-                        " , width=39))
+            m.pos(16)
+            m._print('' + strformat(left="Print Val5"[:11], right="-                        ", width=39))
+
             m.pos(20)
             m._print(''+ strformat(left="Reboot"[:11],right="*........................" , width=39))                      
             strcenter(row = 20,pos=30, txt = "Shutdown ", width = 40, size = 0)
@@ -357,11 +361,12 @@ class StateMachine:
                     'timer': m.zones[2]['texte'],
                     'lang_code': m.zones[3]['texte']}
                 config['printer'] = {
-                    'p_idvend': m.zones[4]['texte'],
-                    'p_idprod': m.zones[5]['texte'],
-                    'p_timer': m.zones[6]['texte'],
-                    'p_3': m.zones[7]['texte'],
-                    'p_4': m.zones[8]['texte']}
+                    'p_enabled': m.zones[4]['texte'],
+                    'p_idvend': m.zones[5]['texte'],
+                    'p_idprod': m.zones[6]['texte'],
+                    'p_timer': m.zones[7]['texte'],
+                    'p_3': m.zones[8]['texte'],
+                    'p_4': m.zones[9]['texte']}
                 with open('settings.ini', 'w') as configfile:
                     config.write(configfile)
 

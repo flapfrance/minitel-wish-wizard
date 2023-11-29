@@ -7,7 +7,9 @@ https://www.facebook.com/wishwizardproject This is the Link to the FB page, for 
 
 Special thanks to cquest and his Python library: https://github.com/cquest/pynitel and all the informations found at the "Musée du minitel" : https://www.museeminitel.fr/
 
-0. News: V1.4 Printerintegration (to finish for serial) , after wishchoice to pervious list, some dbchanges: db prefs now unneeded 
+0. News: \n Installation on Raspi Bookworm / Debian12 has some difficulties, cause pip is less suported and refuse the istallation externalpachages (error: externally-managed-environment)\n  Install pip3, and use the flag --break-system-packages, or sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED should help
+1.
+2. V1.4 Printerintegration (to finish for serial) , after wishchoice to pervious list, some dbchanges: db prefs now unneeded 
 also changes the connection automaticly from 1200 to 4800 Bauds (works on Minitel1, on Minitel2  it need to be checked) There are some old Minitels1 without the FNCT key, they only can run with 1200 Bauds. You can set this in the settings.ini.
 needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, I use old 10' Laptops (32 or 64 bits) with Raspberry desktop as Server or Mono installation (so no need fo vnc), and raspberrys as clients (even Raspi 2 works well) 
     - mariadb: ~~`sudo apt install mariadb` (auf Raspberrysystem) or~~ `sudo apt install mariadb-server`
@@ -20,7 +22,7 @@ needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, 
     - To have access to /ttyUSB0 add USER (your user name) to dialout group `sudo usermod -a -G dialout $USER` and restart.
 If  not working try also `sudo usermod -a -G tty $USER` & restart
 
-2. Programm needs from mariadb the database 'minitel':
+3. Programm needs from mariadb the database 'minitel':
     - Acces with: `sudo mariadb`
         - `CREATE DATABASE minitel;`
         - utilisateur1 : `CREATE USER 'utilisateur1'@'%';`
@@ -32,7 +34,7 @@ If  not working try also `sudo usermod -a -G tty $USER` & restart
         - `USE minitel;`
         - `DROP TABLE wishes;` or `DROP TABLE pref;`(Table pref will be replaced by settings.ini in next Version)
 
-3. Start via:
+4. Start via:
     - By CLI:
         - Start out of the directory ./minitel: `python wishwizard.py` bzw. `python3 wishwizard.py`
     - Autostart for Server:
@@ -42,7 +44,7 @@ If  not working try also `sudo usermod -a -G tty $USER` & restart
     - or for clients oder standalone Raspi's
         - "crontab -e" and "@reboot sleep 60 && cd /home/pi/minitel && /usr/bin/python /home/pi/minitel/wishwizard.py" (`sleep 60` only needed if the dataserver should start first)
         - or perhaps with  .desktop  (file in directory), not tested
-4. Printer (Thermal):
+5. Printer (Thermal):
    
     - install the python bibliotheque: `pip install python-escpos[all]`
     - For USB printers:

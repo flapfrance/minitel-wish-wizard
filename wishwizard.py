@@ -1533,7 +1533,7 @@ def main():
             'IP_adr': '127.0.0.1',
             'speed': '1200',
             'timer': '120',
-            'lang_code': 'FR'
+            'lang_code': 'EN'
             }
         config['printer'] = {
             'p_enabled': '0',

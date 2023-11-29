@@ -195,7 +195,7 @@ class Pynitel:
         self.pos(ligne, colonne+len(data))
         self.sendchr(17)  # Con
         t1 = time.time()
-        t2 = t1 + st #env 236s Screentime Minitel
+        t2 = t1 + float(st) #env 236s Screentime Minitel
 
         while True:
             c = self.conn.read(1).decode()

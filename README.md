@@ -8,7 +8,7 @@ https://www.facebook.com/wishwizardproject This is the Link to the FB page, for 
 Special thanks to cquest and his Python library: https://github.com/cquest/pynitel and all the informations found at the "Musée du minitel" : https://www.museeminitel.fr/
 
 0. News:  Installation on Raspi Bookworm / Debian12 has some difficulties, cause pip is less suported and refuse the istallation externalpachages (error: externally-managed-environment)  Install pip3, and use the flag --break-system-packages for pip installs, or the hard way, `sudo rm /usr/lib/python3.11/EXTERNALLY-MANAGED` should help
-1.There is now an settings.ini file. If your minitel has a FNCT - Key, you can change speed to 4800. Also you can install a printer. Acces to the setting file via your computer or from the Mainpage on minitel by choosing '98' + ENVOI.
+1. There is now an settings.ini file. If your minitel has a FNCT - Key, you can change speed to 4800. Also you can install a printer. Acces to the setting file via your computer or from the Mainpage on minitel by choosing '98' + ENVOI.
 2. V1.4 Printerintegration (to finish for serial) , after wishchoice to pervious list, some dbchanges: db prefs now unneeded 
 also changes the connection automaticly from 1200 to 4800 Bauds (works on Minitel1, on Minitel2  it need to be checked) There are some old Minitels1 without the FNCT key, they only can run with 1200 Bauds. You can set this in the settings.ini.
 needs: If running on RASPI: SSH access & perhaps VNC to install Raspi headless, I use old 10' Laptops (32 or 64 bits) with Raspberry desktop as Server or Mono installation (so no need fo vnc), and raspberrys as clients (even Raspi 2 works well) 
